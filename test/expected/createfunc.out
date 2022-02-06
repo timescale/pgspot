@@ -4,4 +4,5 @@ Unqualified function call: unsafe_call5
 Unqualified function call: unsafe_call8
 Unsafe function creation: f8(integer)
 Unqualified function call: unsafe_call18
-Warnings: 6 Unknown: 0
+
+Errors: 2 Warnings: 4 Unknown: 0

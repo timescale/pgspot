@@ -5,6 +5,7 @@ class GlobalState():
   def __init__(self):
     self.warnings = 0
     self.unknowns = 0
+    self.errors = 0
 
     self.builtin_types = ['bool','bytea','int','jsonb','name','regclass','text','record']
     self.created_schemas = list()
@@ -12,6 +13,10 @@ class GlobalState():
 
   def warn(self, message):
     self.warnings += 1
+    print(message)
+
+  def error(self, message):
+    self.errors += 1
     print(message)
 
   def unknown(self, message):
@@ -37,6 +42,9 @@ class GlobalState():
 
     return secure
 
+  def is_clean(self):
+    return self.errors + self.warnings + self.unknowns == 0
+
   def __str__(self):
-    return "Warnings: {} Unknown: {}".format(self.warnings, self.unknowns)
+    return "\nErrors: {} Warnings: {} Unknown: {}".format(self.errors, self.warnings, self.unknowns)
 

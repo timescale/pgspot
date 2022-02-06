@@ -5,4 +5,5 @@ Unqualified function call: unsafe_call13
 Unqualified function call: unsafe_call17
 Unqualified function call: safe_call19
 Unqualified function call: unsafe_call21
-Warnings: 7 Unknown: 0
+
+Errors: 0 Warnings: 7 Unknown: 0

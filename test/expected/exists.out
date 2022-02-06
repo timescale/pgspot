@@ -13,4 +13,5 @@ Unsafe table creation: table10
 Unqualified object reference: table10
 Unsafe object creation: table11
 Unqualified object reference: table11
-Warnings: 15 Unknown: 0
+
+Errors: 9 Warnings: 6 Unknown: 0

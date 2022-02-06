@@ -85,7 +85,7 @@ class SQLVisitor(Visitor):
     elif format_function(node) in self.state.created_functions:
       pass
     elif node.replace:
-      self.state.warn("Unsafe function creation: {}".format(format_function(node)))
+      self.state.error("Unsafe function creation: {}".format(format_function(node)))
 
     # keep track of functions created in this script in case they get replaced later
     if node.replace == False:
@@ -113,11 +113,11 @@ class SQLVisitor(Visitor):
 
   def visit_CreateTransformStmt(self, ancestors, node):
     if node.replace:
-      self.state.warn("Unsafe transform creation: {}".format(format_name(node.type_name)))
+      self.state.error("Unsafe transform creation: {}".format(format_name(node.type_name)))
 
   def visit_DefineStmt(self, ancestors, node):
     if (hasattr(node, 'replace') and node.replace) or (hasattr(node, 'if_not_exists') and node.if_not_exists):
-      self.state.warn("Unsafe object creation: {}".format(format_name(node.defnames)))
+      self.state.error("Unsafe object creation: {}".format(format_name(node.defnames)))
 
   def visit_VariableSetStmt(self, ancestors, node):
     # only search_path relevant
@@ -135,16 +135,16 @@ class SQLVisitor(Visitor):
 
   def visit_CaseExpr(self, ancestors, node):
     if node.arg:
-      self.state.warn("Unsafe CASE expression: {}".format(raw_sql(node)))
+      self.state.error("Unsafe CASE expression: {}".format(raw_sql(node)))
 
   def visit_CreateSchemaStmt(self, ancestors, node):
     if node.if_not_exists:
-      self.state.warn("Unsafe schema creation: {}".format(node.schemaname))
+      self.state.error("Unsafe schema creation: {}".format(node.schemaname))
     self.state.created_schemas.append(node.schemaname)
 
   def visit_CreateSeqStmt(self, ancestors, node):
     if node.if_not_exists:
-      self.state.warn("Unsafe sequence creation: {}".format(raw_sql(node.sequence)))
+      self.state.error("Unsafe sequence creation: {}".format(raw_sql(node.sequence)))
 
   def visit_CreateStmt(self, ancestors, node):
     # We consider table creation safe even with IF NOT EXISTS if it happens in a
@@ -152,23 +152,23 @@ class SQLVisitor(Visitor):
     if 'schemaname' in node.relation and node.relation.schemaname in self.state.created_schemas:
       pass
     elif node.if_not_exists:
-      self.state.warn("Unsafe table creation: {}".format(format_name(node.relation)))
+      self.state.error("Unsafe table creation: {}".format(format_name(node.relation)))
 
   def visit_CreateTableAsStmt(self, ancestors, node):
     if node.if_not_exists:
-      self.state.warn("Unsafe object creation: {}".format(format_name(node.into.rel)))
+      self.state.error("Unsafe object creation: {}".format(format_name(node.into.rel)))
 
   def visit_CreateForeignServerStmt(self, ancestors, node):
     if node.if_not_exists:
-      self.state.warn("Unsafe foreign server creation: {}".format(node.servername))
+      self.state.error("Unsafe foreign server creation: {}".format(node.servername))
 
   def visit_IndexStmt(self, ancestors, node):
     if node.if_not_exists:
-      self.state.warn("Unsafe index creation: {}".format(format_name(node.idxname)))
+      self.state.error("Unsafe index creation: {}".format(format_name(node.idxname)))
 
   def visit_ViewStmt(self, ancestors, node):
     if node.replace:
-      self.state.warn("Unsafe view creation: {}".format(format_name(node.view)))
+      self.state.error("Unsafe view creation: {}".format(format_name(node.view)))
 
   def visit_DoStmt(self, ancestors, node):
     language = [l.arg.val for l in node.args if l.defname == 'language'][0]

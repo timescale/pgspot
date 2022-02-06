@@ -14,6 +14,6 @@ else:
 visit_sql(state, data)
 print(state)
 
-if state.warnings + state.unknowns > 0:
+if not state.is_clean():
   sys.exit(1)
 

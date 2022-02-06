@@ -1,14 +1,21 @@
 
 from pglast import ast, parse_sql, parse_plpgsql
-from pglast.visitors import Visitor, Continue
+from pglast.visitors import Visitor
 from pglast.enums.parsenodes import VariableSetKind
 from formatters import raw_sql, format_name, format_function
+import re
 
 def visit_sql(state, sql, searchpath_secure=False):
   # We have to iterate over toplevel items ourselves cause the visitor does
   # breadth-first iteration, which would conflict with our search_path state
   # tracking.
+
+  # @extschema@ is placeholder in extension scripts for
+  # the schema the extension gets installed in
   sql = sql.replace("@extschema@","_extschema_")
+  # postgres contrib modules are protected by this to
+  # prevent running extension files in psql
+  sql = re.sub(r"^\\echo ","-- ",sql,flags=re.MULTILINE)
 
   visitor = SQLVisitor(state, searchpath_secure)
   for stmt in parse_sql(sql):
@@ -21,13 +28,14 @@ def visit_plpgsql(state, node, searchpath_secure=False):
     case ast.CreateFunctionStmt():
       raw = raw_sql(node)
 
-    # Since plpgsql parser doesnt support DO we wrap in function
+    # Since plpgsql parser doesnt support DO we wrap it in a procedure
+    # for analysis.
     case ast.DoStmt():
       body = [b.arg.val for b in node.args if b.defname == 'as'][0]
       raw = "CREATE PROCEDURE plpgsql_do_wrapper() LANGUAGE PLPGSQL AS $wrapper$ {} $wrapper$;".format(body)
 
     case _:
-      self.state.unknown("Unsupported node in plpgsql: {}".format(node))
+      self.state.unknown("Unknown node in visit_plpgsql: {}".format(node))
       return
 
   # strip out commands currently not supported by parser

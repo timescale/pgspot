@@ -1,0 +1,7 @@
+Unsafe function creation: unsafe3()
+Unqualified function call: unsafe_call3
+Unqualified function call: unsafe_call5
+Unqualified function call: unsafe_call8
+Unsafe function creation: f8(integer)
+Unqualified function call: unsafe_call18
+Warnings: 6 Unknown: 0

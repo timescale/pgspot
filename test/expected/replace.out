@@ -1,0 +1,7 @@
+Unsafe object creation: unsafe_agg3
+Unsafe function creation: unsafe_func4()
+Unsafe function creation: unsafe_proc5()
+Unsafe transform creation: type6
+Unsafe view creation: view9
+Unqualified object reference: view9
+Warnings: 6 Unknown: 0

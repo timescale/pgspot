@@ -1,0 +1,16 @@
+Unsafe object creation: collation3
+Unsafe table creation: unsafe_table4
+Unqualified object reference: unsafe_table4
+Unsafe index creation: index5
+Unqualified object reference: table5
+Unsafe object creation: matview6
+Unqualified object reference: matview6
+Unsafe schema creation: schema7
+Unsafe sequence creation: sequence8
+Unqualified object reference: sequence8
+Unsafe foreign server creation: server9
+Unsafe table creation: table10
+Unqualified object reference: table10
+Unsafe object creation: table11
+Unqualified object reference: table11
+Warnings: 15 Unknown: 0

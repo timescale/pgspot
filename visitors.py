@@ -13,6 +13,7 @@ def visit_sql(state, sql, searchpath_secure=False):
   # @extschema@ is placeholder in extension scripts for
   # the schema the extension gets installed in
   sql = sql.replace("@extschema@","_extschema_")
+  sql = sql.replace("@database_owner@","database_owner")
   # postgres contrib modules are protected by this to
   # prevent running extension files in psql
   sql = re.sub(r"^\\echo ","-- ",sql,flags=re.MULTILINE)
@@ -40,6 +41,7 @@ def visit_plpgsql(state, node, searchpath_secure=False):
 
   # strip out commands currently not supported by parser
   raw = raw.replace('SET SESSION','-- SET SESSION')
+  raw = raw.replace('SET LOCAL','-- SET LOCAL')
   raw = raw.replace('RESET ','-- RESET ')
   raw = raw.replace('COMMIT','-- COMMIT')
   raw = raw.replace('CALL ','SELECT ')
@@ -109,10 +111,16 @@ class SQLVisitor(Visitor):
     else:
       body_secure = False
 
+    # we allow procedures without explicit search_path here cause procedures with SET clause attached
+    # cannot do transaction control
     match(language):
       case 'sql':
+        if not body_secure and not node.is_procedure:
+          self.state.warn("Function without explicit search_path: {}".format(format_function(node)))
         visit_sql(self.state, body, body_secure)
       case 'plpgsql':
+        if not body_secure and not node.is_procedure:
+          self.state.warn("Function without explicit search_path: {}".format(format_function(node)))
         visit_plpgsql(self.state, node, body_secure)
       case 'c':
         pass
@@ -179,11 +187,16 @@ class SQLVisitor(Visitor):
       self.state.error("Unsafe view creation: {}".format(format_name(node.view)))
 
   def visit_DoStmt(self, ancestors, node):
-    language = [l.arg.val for l in node.args if l.defname == 'language'][0]
+    language = [l.arg.val for l in node.args if l.defname == 'language']
+
+    if language:
+      language = language[0]
+    else:
+      language = 'plpgsql'
 
     match(language):
       case 'plpgsql':
-        visit_plpgsql(self.state, node)
+        visit_plpgsql(self.state, node, self.searchpath_secure)
       case _:
         raise Exception("Unknown language: {}".format(language))
 

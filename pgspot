@@ -2,18 +2,49 @@
 
 from visitors import visit_sql
 from state import GlobalState
+from optparse import OptionParser
 import sys
 
-state = GlobalState()
+parser = OptionParser()
+parser.add_option("-a","--append",dest="append",action="store_true",default=False,help="append files before checking")
 
-if len(sys.argv) > 1:
-  data = "\n".join([open(f).read() for f in sys.argv[1:]])
+(options, args) = parser.parse_args()
+
+clean = True
+
+if args:
+  # we got filenames passed
+  if options.append:
+    # treat all files as single unit during processing
+    state = GlobalState()
+    data = "\n".join([open(f).read() for f in args])
+    visit_sql(state, data)
+    print(state)
+    if not state.is_clean():
+      clean = False
+  else:
+    # process each file individually
+    for f in args:
+      print("\n{}\n".format(f))
+      state = GlobalState()
+      data = open(f).read()
+
+      visit_sql(state, data)
+      print(state)
+
+      if not state.is_clean():
+        clean = False
 else:
+  # read from stdin
+  state = GlobalState()
   data = sys.stdin.read()
 
-visit_sql(state, data)
-print(state)
+  visit_sql(state, data)
+  print(state)
 
-if not state.is_clean():
+  if not state.is_clean():
+    clean = False
+
+if not clean:
   sys.exit(1)
 

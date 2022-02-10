@@ -1,8 +1,9 @@
 Unsafe object creation: unsafe_agg3
 Unsafe function creation: unsafe_func4()
+Function without explicit search_path: unsafe_func4()
 Unsafe function creation: unsafe_proc5()
 Unsafe transform creation: type6
 Unsafe view creation: view9
 Unqualified object reference: view9
 
-Errors: 5 Warnings: 1 Unknown: 0
+Errors: 5 Warnings: 2 Unknown: 0

@@ -1,6 +1,9 @@
+Function without explicit search_path: sqlfunc()
 Unqualified function call: unsafe_call3
+Function without explicit search_path: sqlfunc()
 Unqualified function call: unsafe_call10
+Function without explicit search_path: sqlfunc()
 Unqualified function call: unsafe_call13
 Unqualified function call: unsafe_call17
 
-Errors: 0 Warnings: 4 Unknown: 0
+Errors: 0 Warnings: 7 Unknown: 0

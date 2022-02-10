@@ -25,7 +25,8 @@ if args:
   else:
     # process each file individually
     for f in args:
-      print("\n{}\n".format(f))
+      if len(args) > 1:
+        print("\n{}\n".format(f))
       state = GlobalState()
       data = open(f).read()
 

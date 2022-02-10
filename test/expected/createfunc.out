@@ -1,8 +1,14 @@
 Unsafe function creation: unsafe3()
+Function without explicit search_path: unsafe3()
 Unqualified function call: unsafe_call3
+Function without explicit search_path: safe5()
 Unqualified function call: unsafe_call5
+Function without explicit search_path: f8()
 Unqualified function call: unsafe_call8
+Function without explicit search_path: f8()
 Unsafe function creation: f8(integer)
+Function without explicit search_path: f8(integer)
+Function without explicit search_path: safe16()
 Unqualified function call: unsafe_call18
 
-Errors: 2 Warnings: 4 Unknown: 0
+Errors: 2 Warnings: 10 Unknown: 0

@@ -2,30 +2,30 @@
 
 from visitors import visit_sql
 from state import GlobalState
-from optparse import OptionParser
+from argparse import ArgumentParser
 import sys
 
-parser = OptionParser()
-parser.add_option("-a","--append",dest="append",action="store_true",default=False,help="append files before checking")
+parser = ArgumentParser(description='Spot vulnerabilities in PostgreSQL SQL scripts')
+parser.add_argument("-a","--append",dest="append",action="store_true",default=False,help="append files before checking")
+parser.add_argument('files',metavar='FILE',type=str,nargs='*',help='file to check for vulnerabilities')
 
-(options, args) = parser.parse_args()
+args = parser.parse_args()
 
 clean = True
 
-if args:
-  # we got filenames passed
-  if options.append:
+if args.files:
+  if args.append:
     # treat all files as single unit during processing
     state = GlobalState()
-    data = "\n".join([open(f).read() for f in args])
+    data = "\n".join([open(f).read() for f in args.files])
     visit_sql(state, data)
     print(state)
     if not state.is_clean():
       clean = False
   else:
     # process each file individually
-    for f in args:
-      if len(args) > 1:
+    for f in args.files:
+      if len(args.files) > 1:
         print("\n{}\n".format(f))
       state = GlobalState()
       data = open(f).read()

@@ -21,7 +21,7 @@ class GlobalState():
     print(message)
 
   def unknown(self, message):
-    self.unknown += 1
+    self.unknowns += 1
     print(message)
 
   # we consider the search path safe when it only contains

@@ -125,7 +125,7 @@ class SQLVisitor(Visitor):
         if not body_secure and not node.is_procedure:
           self.state.warn("Function without explicit search_path: {}".format(format_function(node)))
         visit_plpgsql(self.state, node, body_secure)
-      case 'c':
+      case ('c'|'internal'):
         pass
       case _:
         self.state.unknown("Unknown function language: {}".format(language))

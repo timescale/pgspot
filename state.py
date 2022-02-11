@@ -14,15 +14,18 @@ class GlobalState():
 
   def warn(self, message):
     self.warnings += 1
-    print(message)
+    if not self.args.summary_only:
+      print(message)
 
   def error(self, message):
     self.errors += 1
-    print(message)
+    if not self.args.summary_only:
+      print(message)
 
   def unknown(self, message):
     self.unknowns += 1
-    print(message)
+    if not self.args.summary_only:
+      print(message)
 
   # we consider the search path safe when it only contains
   # pg_catalog and any schema created in this script

@@ -2,7 +2,8 @@
 from pglast import ast
 
 class GlobalState():
-  def __init__(self):
+  def __init__(self, args):
+    self.args = args
     self.warnings = 0
     self.unknowns = 0
     self.errors = 0

@@ -9,7 +9,7 @@ do
   result=${file/\/sql\//\/results\/}
   result="test/results/${name}.out"
   expected="test/expected/${name}.out"
-  ./pgspot $file > $result
+  ./pgspot --plpgsql $file > $result
   if diff -u $expected $result; then
     status="OK"
   else

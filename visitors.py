@@ -25,6 +25,9 @@ def visit_sql(state, sql, searchpath_secure=False):
 # PLPGSQL support is very rudimentary as the parser does not support it
 # very well and bails on a few commands relevant to us eg SET/RESET
 def visit_plpgsql(state, node, searchpath_secure=False):
+  if not state.args.plpgsql:
+    return
+
   match(node):
     case ast.CreateFunctionStmt():
       raw = raw_sql(node)

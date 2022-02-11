@@ -2,11 +2,12 @@
 
 from visitors import visit_sql
 from state import GlobalState
-from argparse import ArgumentParser
+from argparse import ArgumentParser, BooleanOptionalAction
 import sys
 
 parser = ArgumentParser(description='Spot vulnerabilities in PostgreSQL SQL scripts')
 parser.add_argument("-a","--append",dest="append",action="store_true",default=False,help="append files before checking")
+parser.add_argument("--plpgsql", action=BooleanOptionalAction, help="Analyze PLpgSQL code")
 parser.add_argument('files',metavar='FILE',type=str,nargs='*',help='file to check for vulnerabilities')
 
 args = parser.parse_args()
@@ -16,7 +17,7 @@ clean = True
 if args.files:
   if args.append:
     # treat all files as single unit during processing
-    state = GlobalState()
+    state = GlobalState(args)
     data = "\n".join([open(f).read() for f in args.files])
     visit_sql(state, data)
     print(state)
@@ -27,7 +28,7 @@ if args.files:
     for f in args.files:
       if len(args.files) > 1:
         print("\n{}\n".format(f))
-      state = GlobalState()
+      state = GlobalState(args)
       data = open(f).read()
 
       visit_sql(state, data)
@@ -37,7 +38,7 @@ if args.files:
         clean = False
 else:
   # read from stdin
-  state = GlobalState()
+  state = GlobalState(args)
   data = sys.stdin.read()
 
   visit_sql(state, data)

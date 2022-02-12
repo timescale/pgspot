@@ -12,7 +12,8 @@ def visit_sql(state, sql, searchpath_secure=False):
 
   # @extschema@ is placeholder in extension scripts for
   # the schema the extension gets installed in
-  sql = sql.replace("@extschema@","_extschema_")
+  sql = sql.replace("@extschema@","extschema")
+  sql = sql.replace("@extowner@","extowner")
   sql = sql.replace("@database_owner@","database_owner")
   # postgres contrib modules are protected by this to
   # prevent running extension files in psql

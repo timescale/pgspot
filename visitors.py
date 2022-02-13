@@ -107,6 +107,13 @@ class SQLVisitor(Visitor):
 
     # check function body
     language = [l.arg.val for l in node.options if l.defname == 'language'][0]
+    # check for security definer explicitly
+    security = [s.arg.val == 1 for s in node.options if s.defname == 'security']
+    if len(security) > 0:
+      security = security[0]
+    else:
+      security = False
+
     body = [b.arg[0].val for b in node.options if b.defname == 'as'][0]
     setter = [s.arg for s in node.options if s.defname == 'set' and s.arg.name == "search_path"]
 
@@ -115,15 +122,21 @@ class SQLVisitor(Visitor):
     else:
       body_secure = False
 
+    if security:
+      if not setter:
+        self.state.error("SECURITY DEFINER function without explicit search_path: {}".format(format_function(node)))
+      elif not body_secure:
+        self.state.error("SECURITY DEFINER function with insecure search_path: {}".format(format_function(node)))
+
     # we allow procedures without explicit search_path here cause procedures with SET clause attached
     # cannot do transaction control
     match(language):
       case 'sql':
-        if not body_secure and not node.is_procedure:
+        if not security and not body_secure and not node.is_procedure:
           self.state.warn("Function without explicit search_path: {}".format(format_function(node)))
         visit_sql(self.state, body, body_secure)
       case 'plpgsql':
-        if not body_secure and not node.is_procedure:
+        if not security and not body_secure and not node.is_procedure:
           self.state.warn("Function without explicit search_path: {}".format(format_function(node)))
         visit_plpgsql(self.state, node, body_secure)
       case ('c'|'internal'):

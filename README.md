@@ -2,6 +2,11 @@
 
 Spot vulnerabilities in extension update scripts.
 
+## Requirements
+
+- python >= 3.10
+- pglast
+
 ### Usage
 
 ```

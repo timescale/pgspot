@@ -3,6 +3,7 @@ from pglast import ast, parse_sql, parse_plpgsql
 from pglast.visitors import Visitor
 from pglast.enums.parsenodes import VariableSetKind
 from formatters import raw_sql, format_name, format_function
+from state import State
 import re
 
 def visit_sql(state, sql, searchpath_secure=False):
@@ -19,7 +20,7 @@ def visit_sql(state, sql, searchpath_secure=False):
   # prevent running extension files in psql
   sql = re.sub(r"^\\echo ","-- ",sql,flags=re.MULTILINE)
 
-  visitor = SQLVisitor(state, searchpath_secure)
+  visitor = SQLVisitor(state)
   for stmt in parse_sql(sql):
     visitor(stmt)
 
@@ -43,24 +44,16 @@ def visit_plpgsql(state, node, searchpath_secure=False):
       self.state.unknown("Unknown node in visit_plpgsql: {}".format(node))
       return
 
-  # strip out commands currently not supported by parser
-  raw = raw.replace('SET SESSION','-- SET SESSION')
-  raw = raw.replace('SET LOCAL','-- SET LOCAL')
-  raw = raw.replace('RESET ','-- RESET ')
-  raw = raw.replace('COMMIT','-- COMMIT')
-  raw = raw.replace('CALL ','SELECT ')
-
   parsed = parse_plpgsql(raw)
 
-  visitor = PLPGSQLVisitor(state, searchpath_secure)
+  visitor = PLPGSQLVisitor(state)
   for item in parsed:
     visitor(item)
 
 class PLPGSQLVisitor():
 
-  def __init__(self, state, searchpath_secure=False):
+  def __init__(self, state):
     super(self.__class__, self).__init__()
-    self.searchpath_secure = searchpath_secure
     self.state = state
 
   def __call__(self, node):
@@ -74,14 +67,13 @@ class PLPGSQLVisitor():
       for key, value in node.items():
         match(key):
           case 'PLpgSQL_expr':
-            visit_sql(self.state, value['query'], self.searchpath_secure)
+            visit_sql(self.state, value['query'])
           case _:
             self.visit(value)
 
 class SQLVisitor(Visitor):
-  def __init__(self, state, searchpath_secure=False):
+  def __init__(self, state):
     self.state = state
-    self.searchpath_secure = searchpath_secure
     super(self.__class__, self).__init__()
 
   def visit_A_Expr(self, ancestors, node):
@@ -135,9 +127,14 @@ class SQLVisitor(Visitor):
 
     match(language):
       case 'sql':
-        visit_sql(self.state, body, body_secure)
+        state = State(self.state.counter)
+        state.searchpath_secure = body_secure
+
+        visit_sql(state, body)
       case 'plpgsql':
-        visit_plpgsql(self.state, node, body_secure)
+        state = State(self.state.counter)
+        state.searchpath_secure = body_secure
+        visit_plpgsql(state, node)
       case ('c'|'internal'):
         pass
       case _:
@@ -155,14 +152,14 @@ class SQLVisitor(Visitor):
     # only search_path relevant
     if node.name == 'search_path':
       if node.kind == VariableSetKind.VAR_SET_VALUE:
-        self.searchpath_secure = self.state.is_secure_searchpath(node)
+        self.state.set_searchpath(node)
       if node.kind == VariableSetKind.VAR_RESET:
-        self.searchpath_secure = False
+        self.state.reset_searchpath()
 
   def visit_AlterSeqStmt(self, ancestors, node):
     # This is not really a problem inside extension scripts since search_path
     # will be set to determined value but it might be inside function bodies.
-    if not node.sequence.schemaname and not self.searchpath_secure:
+    if not node.sequence.schemaname and not self.state.searchpath_secure:
       self.state.warn("Unqualified alter sequence: {}".format(node.sequence.relname))
 
   def visit_CaseExpr(self, ancestors, node):
@@ -212,15 +209,15 @@ class SQLVisitor(Visitor):
 
     match(language):
       case 'plpgsql':
-        visit_plpgsql(self.state, node, self.searchpath_secure)
+        visit_plpgsql(self.state, node, self.state.searchpath_secure)
       case _:
         raise Exception("Unknown language: {}".format(language))
 
   def visit_FuncCall(self, ancestors, node):
-    if len(node.funcname) != 2 and not self.searchpath_secure:
+    if len(node.funcname) != 2 and not self.state.searchpath_secure:
       self.state.warn("Unqualified function call: {}".format(format_name(node.funcname)))
 
   def visit_RangeVar(self, ancestors, node):
-    if not node.schemaname and not self.searchpath_secure:
+    if not node.schemaname and not self.state.searchpath_secure:
       self.state.warn("Unqualified object reference: {}".format(node.relname))
 

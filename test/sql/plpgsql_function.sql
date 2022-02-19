@@ -17,9 +17,9 @@ CREATE FUNCTION plpgsqlfunc13() RETURNS TEXT LANGUAGE PLPGSQL AS $$ BEGIN SELECT
 CREATE FUNCTION plpgsqlfunc16() RETURNS TEXT LANGUAGE PLPGSQL AS $$
 BEGIN
   SELECT unsafe_call17();
-  -- SET search_path TO pg_catalog;
+  SET search_path TO pg_catalog;
   SELECT safe_call19();
-  -- RESET search_path;
+  RESET search_path;
   SELECT unsafe_call21();
   SELECT foo.safe_call22();
 END;

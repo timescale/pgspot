@@ -8,7 +8,6 @@ Function without explicit search_path: plpgsqlfunc13()
 Unqualified function call: unsafe_call13
 Function without explicit search_path: plpgsqlfunc16()
 Unqualified function call: unsafe_call17
-Unqualified function call: safe_call19
 Unqualified function call: unsafe_call21
 
-Errors: 0 Warnings: 12 Unknown: 0
+Errors: 0 Warnings: 11 Unknown: 0

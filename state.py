@@ -38,6 +38,7 @@ class State():
     self.args = counter.args
     self.created_schemas = list()
     self.created_functions = list()
+    self.searchpath_secure = False
 
   def warn(self, message):
     self.counter.warn(message)
@@ -47,6 +48,12 @@ class State():
 
   def unknown(self, message):
     self.counter.unknown(message)
+
+  def set_searchpath(self, setters):
+    self.searchpath_secure = self.is_secure_searchpath(setters)
+
+  def reset_searchpath(self):
+    self.searchpath_secure = False
 
   # we consider the search path safe when it only contains
   # pg_catalog and any schema created in this script

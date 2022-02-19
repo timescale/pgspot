@@ -1,11 +1,10 @@
-name: pgspot
+name: TimescaleDB
 on:
   schedule:
     - cron: '0 0 * * *'
 
 jobs:
   pgspot:
-    name: TimescaleDB
     runs-on: ubuntu-latest
 
     steps:
@@ -15,12 +14,20 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install pglast
-
     - name: Checkout pgspot
       uses: actions/checkout@v2
+
+    - name: Checkout pglast
+      uses: actions/checkout@v2
+      with:
+        repository: 'svenklemm/pglast'
+        submodules: true
+        path: 'pglast'
+
+    - name: Install pglast
+      run: |
+        python -m pip install wheel
+        python -m pip install --force-reinstall ./pglast
 
     - name: Checkout timescaledb
       uses: actions/checkout@v2

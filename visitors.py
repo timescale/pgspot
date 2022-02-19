@@ -77,7 +77,7 @@ class SQLVisitor(Visitor):
     super(self.__class__, self).__init__()
 
   def visit_A_Expr(self, ancestors, node):
-    if len(node.name) != 2 and not self.searchpath_secure:
+    if len(node.name) != 2 and not self.state.searchpath_secure:
       self.state.warn("Unqualified operator: {}".format(format_name(node.name)))
 
   def visit_CreateFunctionStmt(self, ancestors, node):

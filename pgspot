@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from visitors import visit_sql
-from state import GlobalState
+from state import State, Counter
 from argparse import ArgumentParser, BooleanOptionalAction
 import sys
 
@@ -14,41 +14,31 @@ parser.add_argument('files',metavar='FILE',type=str,nargs='*',help='file to chec
 
 args = parser.parse_args()
 
-clean = True
+counter = Counter(args)
 
 if args.files:
   if args.append:
     # treat all files as single unit during processing
-    state = GlobalState(args)
     data = "\n".join([open(f).read() for f in args.files])
-    visit_sql(state, data)
-    print(state)
-    if not state.is_clean():
-      clean = False
+    visit_sql(State(counter), data)
+
   else:
     # process each file individually
     for f in args.files:
       if len(args.files) > 1:
         print("\n{}\n".format(f))
-      state = GlobalState(args)
       data = open(f).read()
 
-      visit_sql(state, data)
-      print(state)
+      visit_sql(State(counter), data)
 
-      if not state.is_clean():
-        clean = False
 else:
   # read from stdin
-  state = GlobalState(args)
   data = sys.stdin.read()
 
-  visit_sql(state, data)
-  print(state)
+  visit_sql(State(counter), data)
 
-  if not state.is_clean():
-    clean = False
+print(counter)
 
-if not clean:
+if not counter.is_clean():
   sys.exit(1)
 

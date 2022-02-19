@@ -1,14 +1,13 @@
 
 from pglast import ast
 
-class GlobalState():
+class Counter():
   def __init__(self, args):
     self.args = args
     self.warnings = 0
     self.unknowns = 0
     self.errors = 0
 
-    self.builtin_types = ['bool','bytea','int','jsonb','name','regclass','text','record']
     self.created_schemas = list()
     self.created_functions = list()
 
@@ -26,6 +25,28 @@ class GlobalState():
     self.unknowns += 1
     if not self.args.summary_only:
       print(message)
+
+  def is_clean(self):
+    return self.errors + self.warnings + self.unknowns == 0
+
+  def __str__(self):
+    return "\nErrors: {} Warnings: {} Unknown: {}".format(self.errors, self.warnings, self.unknowns)
+
+class State():
+  def __init__(self, counter):
+    self.counter = counter
+    self.args = counter.args
+    self.created_schemas = list()
+    self.created_functions = list()
+
+  def warn(self, message):
+    self.counter.warn(message)
+
+  def error(self, message):
+    self.counter.error(message)
+
+  def unknown(self, message):
+    self.counter.unknown(message)
 
   # we consider the search path safe when it only contains
   # pg_catalog and any schema created in this script
@@ -45,10 +66,4 @@ class GlobalState():
         raise Exception("Unhandled type in is_secure_searchpath: {}".format(setters))
 
     return secure
-
-  def is_clean(self):
-    return self.errors + self.warnings + self.unknowns == 0
-
-  def __str__(self):
-    return "\nErrors: {} Warnings: {} Unknown: {}".format(self.errors, self.warnings, self.unknowns)
 

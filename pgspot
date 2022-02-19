@@ -7,7 +7,7 @@ import sys
 
 parser = ArgumentParser(description='Spot vulnerabilities in PostgreSQL SQL scripts')
 parser.add_argument("-a","--append",dest="append",action="store_true",default=False,help="append files before checking")
-parser.add_argument("--proc-without-search-path",dest="proc_without_search_path",action="append",default=list(),help="functions without explicit search_path")
+parser.add_argument("--proc-without-search-path",metavar="PROC",dest="proc_without_search_path",action="append",default=list(),help="functions without explicit search_path")
 parser.add_argument("--summary-only",dest="summary_only",action="store_true",default=False,help="only print number of errors, warnings and unknowns")
 parser.add_argument("--plpgsql", action=BooleanOptionalAction, default=True, help="Analyze PLpgSQL code")
 parser.add_argument('files',metavar='FILE',type=str,nargs='*',help='file to check for vulnerabilities')

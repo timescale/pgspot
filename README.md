@@ -11,7 +11,7 @@ Spot vulnerabilities in extension update scripts.
 
 ```
 > ./pgspot -h
-usage: pgspot [-h] [-a] [--plpgsql | --no-plpgsql] [FILE ...]
+usage: pgspot [-h] [-a] [--proc-without-search-path PROC] [--summary-only] [--plpgsql | --no-plpgsql] [FILE ...]
 
 Spot vulnerabilities in PostgreSQL SQL scripts
 
@@ -21,8 +21,12 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   -a, --append          append files before checking
+  --proc-without-search-path PROC
+                        functions without explicit search_path
+  --summary-only        only print number of errors, warnings and unknowns
   --plpgsql, --no-plpgsql
-                        Analyze PLpgSQL code
+                        Analyze PLpgSQL code (default: True)
+
 ```
 
 ```

@@ -1,7 +1,7 @@
 name: TimescaleDB
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 22 * * *'
 
 jobs:
   pgspot:
@@ -55,4 +55,13 @@ jobs:
           --proc-without-search-path '_timescaledb_internal.policy_compression(job_id integer,config jsonb)' \
           --proc-without-search-path '_timescaledb_internal.policy_compression_execute(job_id integer,htid integer,lag anyelement,maxchunks integer,verbose_log boolean,recompress_enabled boolean)' \
         timescaledb/build/sql/timescaledb--*.sql
+
+    - name: Notify slack on failure
+      if: failure()
+      uses: slackapi/slack-github-action@v1.18.0
+      with:
+        channel-id: 'CEKV5LMK3'
+        slack-message: 'Nightly pgspot run for timescaledb repository failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Details>'
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 

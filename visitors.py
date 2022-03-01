@@ -1,7 +1,7 @@
 
 from pglast import ast, parse_sql, parse_plpgsql
 from pglast.visitors import Visitor
-from pglast.enums.parsenodes import VariableSetKind
+from pglast.enums.parsenodes import VariableSetKind, TransactionStmtKind
 from formatters import raw_sql, format_name, format_function
 from state import State
 import re
@@ -218,4 +218,17 @@ class SQLVisitor(Visitor):
   def visit_RangeVar(self, ancestors, node):
     if not node.schemaname and not self.state.searchpath_secure:
       self.state.warn("Unqualified object reference: {}".format(node.relname))
+
+  # SET LOCAL is only effective until end of transaction so we have to reset
+  # searchpath_secure when we encounter transaction statement
+  def visit_TransactionStmt(self, ancestors, node):
+    # we ignore BEGIN here since you have to be in transaction to use SET LOCAL
+    # so BEGIN would be noop
+    if node.kind == TransactionStmtKind.TRANS_STMT_BEGIN:
+      return
+
+    if self.state.searchpath_local:
+      self.state.searchpath_secure = False
+      self.state.searchpath_local = False
+
 

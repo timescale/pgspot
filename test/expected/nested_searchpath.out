@@ -1,0 +1,12 @@
+Unqualified function call: unsafe_call2
+Function without explicit search_path: f10_no_path()
+Unqualified function call: unsafe_call10
+Unqualified function call: unsafe_call_in_do14
+Function without explicit search_path: f18_no_path()
+Unqualified function call: unsafe_call18
+Function without explicit search_path: f19_path()
+Unqualified function call: unsafe_call19
+Function without explicit search_path: f25_nested_no_path()
+Unqualified function call: unsafe_call25
+
+Errors: 0 Warnings: 10 Unknown: 0

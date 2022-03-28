@@ -16,9 +16,11 @@ def visit_sql(state, sql, searchpath_secure=False):
   sql = sql.replace("@extschema@","extschema")
   sql = sql.replace("@extowner@","extowner")
   sql = sql.replace("@database_owner@","database_owner")
-  # postgres contrib modules are protected by this to
-  # prevent running extension files in psql
-  sql = re.sub(r"^\\echo ","-- ",sql,flags=re.MULTILINE)
+  # postgres contrib modules are protected by psql meta commands to
+  # prevent running extension files in psql.
+  # The SQL parser will error on those since they are not valid
+  # SQL, so we comment out all psql meta commands before parsing.
+  sql = re.sub(r"^\\","-- \\\\",sql,flags=re.MULTILINE)
 
   visitor = SQLVisitor(state)
   for stmt in parse_sql(sql):

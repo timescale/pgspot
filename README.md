@@ -7,7 +7,7 @@ practices.  In addition to checking extension scripts it can also be
 used to check security definer functions or any other PostgreSQL SQL code.
 
 pgspot checks for the following vulnerabilities:
-- search-path based attacks
+- search_path-based attacks
 - unsafe object creation
 
 ## Useful links

@@ -1,9 +1,9 @@
 ## pgspot
 
-Spot vulnerabilities in extension update scripts.
+Spot vulnerabilities in PostgreSQL extension scripts.
 
 pgspot checks extension scripts for following PostgreSQL security best
-practices.  In addition to checking extension scripts it can also be
+practices. In addition to checking extension scripts it can also be
 used to check security definer functions or any other PostgreSQL SQL code.
 
 pgspot checks for the following vulnerabilities:

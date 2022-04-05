@@ -1,5 +1,6 @@
 
 from pglast import ast, parse_sql, parse_plpgsql
+from pglast.stream import RawStream
 from pglast.visitors import Visitor
 from pglast.enums.parsenodes import VariableSetKind, TransactionStmtKind
 from formatters import raw_sql, format_name, format_function
@@ -78,7 +79,7 @@ class SQLVisitor(Visitor):
 
   def visit_A_Expr(self, ancestors, node):
     if len(node.name) != 2 and not self.state.searchpath_secure:
-      self.state.warn("Unqualified operator: {}".format(format_name(node.name)))
+      self.state.warn("Unqualified operator: '{}' in {}".format(format_name(node.name), RawStream()(node)))
 
   def visit_CreateFunctionStmt(self, ancestors, node):
     # If the function creation is in a schema we created before we

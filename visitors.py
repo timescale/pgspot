@@ -197,7 +197,9 @@ class SQLVisitor(Visitor):
       self.state.error("Unsafe index creation: {}".format(format_name(node.idxname)))
 
   def visit_ViewStmt(self, ancestors, node):
-    if node.replace:
+    if 'schemaname' in node.view and node.view.schemaname in self.state.created_schemas:
+      pass
+    elif node.replace:
       self.state.error("Unsafe view creation: {}".format(format_name(node.view)))
 
   def visit_DoStmt(self, ancestors, node):

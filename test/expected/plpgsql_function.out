@@ -1,13 +1,13 @@
-Function without explicit search_path: plpgsqlfunc3()
-Unqualified function call: unsafe_call3
-Function without explicit search_path: plpgsqlfunc4()
-Unqualified function call: unsafe_call4
-Function without explicit search_path: plpgsqlfunc5()
-Unqualified function call: unsafe_call5
-Function without explicit search_path: plpgsqlfunc13()
-Unqualified function call: unsafe_call13
-Function without explicit search_path: plpgsqlfunc16()
-Unqualified function call: unsafe_call17
-Unqualified function call: unsafe_call21
+PS005: Function without explicit search_path: plpgsqlfunc3()
+PS016: Unqualified function call: unsafe_call3
+PS005: Function without explicit search_path: plpgsqlfunc4()
+PS016: Unqualified function call: unsafe_call4
+PS005: Function without explicit search_path: plpgsqlfunc5()
+PS016: Unqualified function call: unsafe_call5
+PS005: Function without explicit search_path: plpgsqlfunc13()
+PS016: Unqualified function call: unsafe_call13
+PS005: Function without explicit search_path: plpgsqlfunc16()
+PS016: Unqualified function call: unsafe_call17
+PS016: Unqualified function call: unsafe_call21
 
 Errors: 0 Warnings: 11 Unknown: 0

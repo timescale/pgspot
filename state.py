@@ -1,5 +1,6 @@
 
 from pglast import ast
+from codes import codes
 
 class Counter():
   def __init__(self, args):
@@ -11,15 +12,19 @@ class Counter():
     self.created_schemas = list()
     self.created_functions = list()
 
-  def warn(self, message):
+  def warn(self, code, context):
     self.warnings += 1
+    if code not in codes:
+      raise ValueError
     if not self.args.summary_only:
-      print(message)
+      print("{}: {}: {}".format(code, codes[code]['title'], context))
 
-  def error(self, message):
+  def error(self, code, context):
     self.errors += 1
+    if code not in codes:
+      raise ValueError
     if not self.args.summary_only:
-      print(message)
+      print("{}: {}: {}".format(code, codes[code]['title'], context))
 
   def unknown(self, message):
     self.unknowns += 1
@@ -41,11 +46,11 @@ class State():
     self.searchpath_secure = False
     self.searchpath_local = False
 
-  def warn(self, message):
-    self.counter.warn(message)
+  def warn(self, code, context):
+    self.counter.warn(code, context)
 
-  def error(self, message):
-    self.counter.error(message)
+  def error(self, code, context):
+    self.counter.error(code, context)
 
   def unknown(self, message):
     self.counter.unknown(message)

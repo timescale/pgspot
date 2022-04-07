@@ -1,17 +1,17 @@
-Unsafe object creation: collation3
-Unsafe table creation: unsafe_table4
-Unqualified object reference: unsafe_table4
-Unsafe index creation: index5
-Unqualified object reference: table5
-Unsafe object creation: matview6
-Unqualified object reference: matview6
-Unsafe schema creation: schema7
-Unsafe sequence creation: sequence8
-Unqualified object reference: sequence8
-Unsafe foreign server creation: server9
-Unsafe table creation: table10
-Unqualified object reference: table10
-Unsafe object creation: table11
-Unqualified object reference: table11
+E005: Unsafe object creation: collation3
+E009: Unsafe table creation: unsafe_table4
+W005: Unqualified object reference: unsafe_table4
+E011: Unsafe index creation: index5
+W005: Unqualified object reference: table5
+E005: Unsafe object creation: matview6
+W005: Unqualified object reference: matview6
+E007: Unsafe schema creation: schema7
+E008: Unsafe sequence creation: sequence8
+W005: Unqualified object reference: sequence8
+E010: Unsafe foreign server creation: server9
+E009: Unsafe table creation: table10
+W005: Unqualified object reference: table10
+E005: Unsafe object creation: table11
+W005: Unqualified object reference: table11
 
 Errors: 9 Warnings: 6 Unknown: 0

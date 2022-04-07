@@ -1,4 +1,4 @@
-Unqualified function call: unsafe_call21
-Unqualified function call: unsafe_call30
+W004: Unqualified function call: unsafe_call21
+W004: Unqualified function call: unsafe_call30
 
 Errors: 0 Warnings: 2 Unknown: 0

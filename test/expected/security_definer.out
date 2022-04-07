@@ -1,8 +1,8 @@
-SECURITY DEFINER function without explicit search_path: unsafe_sec_definer2()
-Unqualified function call: now
-Function without explicit search_path: safe_sec_invoker4()
-SECURITY DEFINER function without explicit search_path: unsafe_sec_definer6()
-Function without explicit search_path: safe_sec_definer8()
-SECURITY DEFINER function without explicit search_path: unsafe_sec_definer10()
+E002: SECURITY DEFINER function without explicit search_path: unsafe_sec_definer2()
+W004: Unqualified function call: now
+W002: Function without explicit search_path: safe_sec_invoker4()
+E002: SECURITY DEFINER function without explicit search_path: unsafe_sec_definer6()
+W002: Function without explicit search_path: safe_sec_definer8()
+E002: SECURITY DEFINER function without explicit search_path: unsafe_sec_definer10()
 
 Errors: 3 Warnings: 3 Unknown: 0

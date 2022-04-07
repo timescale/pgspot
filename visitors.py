@@ -164,7 +164,7 @@ class SQLVisitor(Visitor):
       self.state.warn("Unqualified alter sequence: {}".format(node.sequence.relname))
 
   def visit_CaseExpr(self, ancestors, node):
-    if node.arg:
+    if node.arg and not self.state.searchpath_secure:
       self.state.error("Unsafe CASE expression: {}".format(raw_sql(node)))
 
   def visit_CreateSchemaStmt(self, ancestors, node):

@@ -221,8 +221,21 @@ class SQLVisitor(Visitor):
       self.state.warn("Unqualified function call: {}".format(format_name(node.funcname)))
 
   def visit_RangeVar(self, ancestors, node):
-    if not node.schemaname and not self.state.searchpath_secure:
+    # a rangevar can reference CTEs which were previously defined
+    cte_names = self.extract_cte_names(ancestors)
+    if not node.schemaname and node.relname not in cte_names and not self.state.searchpath_secure:
       self.state.warn("Unqualified object reference: {}".format(node.relname))
+
+  def extract_cte_names(self, ancestor):
+    # Iterate through parents, obtaining the names of CTEs which were directly defined
+    cte_names = set()
+    while ancestor.parent.node is not None:
+      node = ancestor.node
+      if hasattr(node, 'withClause') and node.withClause is not None:
+        for cte in node.withClause.ctes:
+          cte_names.add(cte.ctename)
+      ancestor = ancestor.parent
+    return cte_names
 
   # SET LOCAL is only effective until end of transaction so we have to reset
   # searchpath_secure when we encounter transaction statement

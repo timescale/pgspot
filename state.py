@@ -45,12 +45,17 @@ class State():
     self.created_functions = list()
     self.searchpath_secure = False
     self.searchpath_local = False
+    self.allow_list_stack = list()
+    self.allow_set = set()
+    self.sub_sql_stack = list()
 
   def warn(self, code, context):
-    self.counter.warn(code, context)
+    if code not in self.allow_set:
+      self.counter.warn(code, context)
 
   def error(self, code, context):
-    self.counter.error(code, context)
+    if code not in self.allow_set:
+      self.counter.error(code, context)
 
   def unknown(self, message):
     self.counter.unknown(message)
@@ -62,6 +67,20 @@ class State():
   def reset_searchpath(self):
     self.searchpath_secure = False
     self.searchpath_local = False
+
+  def push_sub_sql(self, sub_sql):
+    self.sub_sql_stack.append(sub_sql)
+
+  def pop_sub_sql(self):
+    self.sub_sql_stack.pop()
+
+  def push_allow_list(self, allow_list):
+    self.allow_list_stack.append(allow_list)
+    self.allow_set = set().union(*self.allow_list_stack)
+
+  def pop_allow_list(self):
+    self.allow_list_stack.pop()
+    self.allow_set = set().union(*self.allow_list_stack)
 
   # we consider the search path safe when it only contains
   # pg_catalog and any schema created in this script

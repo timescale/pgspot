@@ -7,7 +7,7 @@ from formatters import raw_sql, format_name, format_function
 from state import State
 import re
 
-def visit_sql(state, sql, searchpath_secure=False):
+def visit_sql(state, sql, searchpath_secure=False, toplevel=False):
   # We have to iterate over toplevel items ourselves cause the visitor does
   # breadth-first iteration, which would conflict with our search_path state
   # tracking.
@@ -25,7 +25,23 @@ def visit_sql(state, sql, searchpath_secure=False):
 
   visitor = SQLVisitor(state)
   for stmt in parse_sql(sql):
+    start = stmt.stmt_location
+    end = start + stmt.stmt_len
+    sub_sql = sql if end == 0 else sql[start:end]
+    allow_list = extract_allow_list(sub_sql)
+    state.push_allow_list(allow_list)
+    state.push_sub_sql(sub_sql)
     visitor(stmt)
+    state.pop_allow_list()
+    state.pop_sub_sql()
+
+def extract_allow_list(string):
+  allow_list = set()
+  for line in string.splitlines():
+    r = re.match("\s*--\s*pgspot:allow\((.*)\)", line)
+    if r is not None:
+      allow_list.add(r.group(1))
+  return allow_list
 
 def visit_plpgsql(state, node, searchpath_secure=False):
   if not state.args.plpgsql:

@@ -25,7 +25,7 @@ vulnerabilities which pgspot detects, and their potential mitigations.
 
 ```
 > ./pgspot -h
-usage: pgspot [-h] [-a] [--proc-without-search-path PROC] [--summary-only] [--plpgsql | --no-plpgsql] [--explain EXPLAIN] [FILE ...]
+usage: pgspot [-h] [-a] [--proc-without-search-path PROC] [--summary-only] [--plpgsql | --no-plpgsql] [--explain EXPLAIN] [--ignore IGNORE] [FILE ...]
 
 Spot vulnerabilities in PostgreSQL SQL scripts
 
@@ -41,13 +41,13 @@ options:
   --plpgsql, --no-plpgsql
                         Analyze PLpgSQL code (default: True)
   --explain EXPLAIN     Describe an error/warning code
+  --ignore IGNORE       Ignore error or warning code
 ```
 
 ```
-> ./pgspot <<<"CREATE TABLE IF NOT EXISTS foo();"
-E009: Unsafe table creation: foo
-W005: Unqualified object reference: foo
+> ./pgspot --ignore PS017 <<<"CREATE TABLE IF NOT EXISTS foo();"
+PS012: Unsafe table creation: foo
 
-Errors: 1 Warnings: 1 Unknown: 0
+Errors: 1 Warnings: 0 Unknown: 0
 ```
 

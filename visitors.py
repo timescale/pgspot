@@ -147,7 +147,8 @@ class SQLVisitor(Visitor):
 
   def visit_DefineStmt(self, ancestors, node):
     if (hasattr(node, 'replace') and node.replace) or (hasattr(node, 'if_not_exists') and node.if_not_exists):
-      self.state.error("Unsafe object creation: {}".format(format_name(node.defnames)))
+      if node.defnames[0].val not in self.state.created_schemas:
+        self.state.error("Unsafe object creation: {}".format(format_name(node.defnames)))
 
   def visit_VariableSetStmt(self, ancestors, node):
     # only search_path relevant
@@ -173,7 +174,7 @@ class SQLVisitor(Visitor):
     self.state.created_schemas.append(node.schemaname)
 
   def visit_CreateSeqStmt(self, ancestors, node):
-    if node.if_not_exists:
+    if node.if_not_exists and node.sequence.schemaname not in self.state.created_schemas:
       self.state.error("Unsafe sequence creation: {}".format(raw_sql(node.sequence)))
 
   def visit_CreateStmt(self, ancestors, node):
@@ -185,7 +186,7 @@ class SQLVisitor(Visitor):
       self.state.error("Unsafe table creation: {}".format(format_name(node.relation)))
 
   def visit_CreateTableAsStmt(self, ancestors, node):
-    if node.if_not_exists:
+    if node.if_not_exists and node.into.rel.schemaname not in self.state.created_schemas:
       self.state.error("Unsafe object creation: {}".format(format_name(node.into.rel)))
 
   def visit_CreateForeignServerStmt(self, ancestors, node):

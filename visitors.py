@@ -169,7 +169,7 @@ class SQLVisitor(Visitor):
       self.state.error("Unsafe CASE expression: {}".format(raw_sql(node)))
 
   def visit_CreateSchemaStmt(self, ancestors, node):
-    if node.if_not_exists:
+    if node.if_not_exists and node.schemaname not in self.state.created_schemas:
       self.state.error("Unsafe schema creation: {}".format(node.schemaname))
     self.state.created_schemas.append(node.schemaname)
 
@@ -194,7 +194,7 @@ class SQLVisitor(Visitor):
       self.state.error("Unsafe foreign server creation: {}".format(node.servername))
 
   def visit_IndexStmt(self, ancestors, node):
-    if node.if_not_exists:
+    if node.if_not_exists and node.relation.schemaname not in self.state.created_schemas:
       self.state.error("Unsafe index creation: {}".format(format_name(node.idxname)))
 
   def visit_ViewStmt(self, ancestors, node):

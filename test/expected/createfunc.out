@@ -1,14 +1,14 @@
-Unsafe function creation: unsafe3()
-Function without explicit search_path: unsafe3()
-Unqualified function call: unsafe_call3
-Function without explicit search_path: safe5()
-Unqualified function call: unsafe_call5
-Function without explicit search_path: f8()
-Unqualified function call: unsafe_call8
-Function without explicit search_path: f8()
-Unsafe function creation: f8(integer)
-Function without explicit search_path: f8(integer)
-Function without explicit search_path: safe16()
-Unqualified function call: unsafe_call18
+PS002: Unsafe function creation: unsafe3()
+PS005: Function without explicit search_path: unsafe3()
+PS016: Unqualified function call: unsafe_call3
+PS005: Function without explicit search_path: safe5()
+PS016: Unqualified function call: unsafe_call5
+PS005: Function without explicit search_path: f8()
+PS016: Unqualified function call: unsafe_call8
+PS005: Function without explicit search_path: f8()
+PS002: Unsafe function creation: f8(integer)
+PS005: Function without explicit search_path: f8(integer)
+PS005: Function without explicit search_path: safe16()
+PS016: Unqualified function call: unsafe_call18
 
 Errors: 2 Warnings: 10 Unknown: 0

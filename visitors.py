@@ -79,7 +79,7 @@ class SQLVisitor(Visitor):
 
   def visit_A_Expr(self, ancestors, node):
     if len(node.name) != 2 and not self.state.searchpath_secure:
-      self.state.warn("Unqualified operator: '{}' in {}".format(format_name(node.name), RawStream()(node)))
+      self.state.warn("PS001", "'{}' in {}".format(format_name(node.name), RawStream()(node)))
 
   def visit_CreateFunctionStmt(self, ancestors, node):
     # If the function creation is in a schema we created before we
@@ -92,7 +92,7 @@ class SQLVisitor(Visitor):
     elif format_function(node) in self.state.created_functions:
       pass
     elif node.replace:
-      self.state.error("Unsafe function creation: {}".format(format_function(node)))
+      self.state.error("PS002", "{}".format(format_function(node)))
 
     # keep track of functions created in this script in case they get replaced later
     if node.replace == False:
@@ -118,13 +118,13 @@ class SQLVisitor(Visitor):
     # functions without explicit search_path will generate a warning unless they are SECURITY DEFINER
     if security:
       if not setter:
-        self.state.error("SECURITY DEFINER function without explicit search_path: {}".format(format_function(node)))
+        self.state.error("PS003", "{}".format(format_function(node)))
       elif not body_secure:
-        self.state.error("SECURITY DEFINER function with insecure search_path: {}".format(format_function(node)))
+        self.state.error("PS004", "{}".format(format_function(node)))
     else:
       if language in ['sql','plpgsql']:
         if not body_secure and format_function(node) not in self.state.args.proc_without_search_path:
-          self.state.warn("Function without explicit search_path: {}".format(format_function(node)))
+          self.state.warn("PS005", "{}".format(format_function(node)))
 
     match(language):
       case 'sql':
@@ -143,12 +143,12 @@ class SQLVisitor(Visitor):
 
   def visit_CreateTransformStmt(self, ancestors, node):
     if node.replace:
-      self.state.error("Unsafe transform creation: {}".format(format_name(node.type_name)))
+      self.state.error("PS006", "{}".format(format_name(node.type_name)))
 
   def visit_DefineStmt(self, ancestors, node):
     if (hasattr(node, 'replace') and node.replace) or (hasattr(node, 'if_not_exists') and node.if_not_exists):
       if node.defnames[0].val not in self.state.created_schemas:
-        self.state.error("Unsafe object creation: {}".format(format_name(node.defnames)))
+        self.state.error("PS007", "{}".format(format_name(node.defnames)))
 
   def visit_VariableSetStmt(self, ancestors, node):
     # only search_path relevant
@@ -162,20 +162,20 @@ class SQLVisitor(Visitor):
     # This is not really a problem inside extension scripts since search_path
     # will be set to determined value but it might be inside function bodies.
     if not node.sequence.schemaname and not self.state.searchpath_secure:
-      self.state.warn("Unqualified alter sequence: {}".format(node.sequence.relname))
+      self.state.warn("PS008", "{}".format(node.sequence.relname))
 
   def visit_CaseExpr(self, ancestors, node):
     if node.arg and not self.state.searchpath_secure:
-      self.state.error("Unsafe CASE expression: {}".format(raw_sql(node)))
+      self.state.error("PS009", "{}".format(raw_sql(node)))
 
   def visit_CreateSchemaStmt(self, ancestors, node):
     if node.if_not_exists and node.schemaname not in self.state.created_schemas:
-      self.state.error("Unsafe schema creation: {}".format(node.schemaname))
+      self.state.error("PS010", "{}".format(node.schemaname))
     self.state.created_schemas.append(node.schemaname)
 
   def visit_CreateSeqStmt(self, ancestors, node):
     if node.if_not_exists and node.sequence.schemaname not in self.state.created_schemas:
-      self.state.error("Unsafe sequence creation: {}".format(raw_sql(node.sequence)))
+      self.state.error("PS011", "{}".format(raw_sql(node.sequence)))
 
   def visit_CreateStmt(self, ancestors, node):
     # We consider table creation safe even with IF NOT EXISTS if it happens in a
@@ -183,25 +183,25 @@ class SQLVisitor(Visitor):
     if 'schemaname' in node.relation and node.relation.schemaname in self.state.created_schemas:
       pass
     elif node.if_not_exists:
-      self.state.error("Unsafe table creation: {}".format(format_name(node.relation)))
+      self.state.error("PS012", "{}".format(format_name(node.relation)))
 
   def visit_CreateTableAsStmt(self, ancestors, node):
     if node.if_not_exists and node.into.rel.schemaname not in self.state.created_schemas:
-      self.state.error("Unsafe object creation: {}".format(format_name(node.into.rel)))
+      self.state.error("PS007", "{}".format(format_name(node.into.rel)))
 
   def visit_CreateForeignServerStmt(self, ancestors, node):
     if node.if_not_exists:
-      self.state.error("Unsafe foreign server creation: {}".format(node.servername))
+      self.state.error("PS013", "{}".format(node.servername))
 
   def visit_IndexStmt(self, ancestors, node):
     if node.if_not_exists and node.relation.schemaname not in self.state.created_schemas:
-      self.state.error("Unsafe index creation: {}".format(format_name(node.idxname)))
+      self.state.error("PS014", "{}".format(format_name(node.idxname)))
 
   def visit_ViewStmt(self, ancestors, node):
     if 'schemaname' in node.view and node.view.schemaname in self.state.created_schemas:
       pass
     elif node.replace:
-      self.state.error("Unsafe view creation: {}".format(format_name(node.view)))
+      self.state.error("PS015", "{}".format(format_name(node.view)))
 
   def visit_DoStmt(self, ancestors, node):
     language = [l.arg.val for l in node.args if l.defname == 'language']
@@ -219,13 +219,13 @@ class SQLVisitor(Visitor):
 
   def visit_FuncCall(self, ancestors, node):
     if len(node.funcname) != 2 and not self.state.searchpath_secure:
-      self.state.warn("Unqualified function call: {}".format(format_name(node.funcname)))
+      self.state.warn("PS016", "{}".format(format_name(node.funcname)))
 
   def visit_RangeVar(self, ancestors, node):
     # a rangevar can reference CTEs which were previously defined
     cte_names = self.extract_cte_names(ancestors)
     if not node.schemaname and node.relname not in cte_names and not self.state.searchpath_secure:
-      self.state.warn("Unqualified object reference: {}".format(node.relname))
+      self.state.warn("PS017", "{}".format(node.relname))
 
   def extract_cte_names(self, ancestor):
     # Iterate through parents, obtaining the names of CTEs which were directly defined

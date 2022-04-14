@@ -25,6 +25,8 @@ let
   py310 = pkgs.python310;
   py-with-packages = py310.withPackages (p: with p; [
     pglast
+    p.pytest
+    p.pytest-snapshot
   ]);
 
 in
@@ -33,6 +35,6 @@ pkgs.mkShell {
     py-with-packages
   ];
   shellHook = ''
-    PYTHONPATH=${py-with-packages}/${py-with-packages.sitePackages}
+    export PYTHONPATH=${py-with-packages}/${py-with-packages.sitePackages}
   '';
 }

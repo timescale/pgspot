@@ -24,10 +24,11 @@ jobs:
         submodules: true
         path: 'pglast'
 
-    - name: Install pglast
+    - name: Install packages
       run: |
         python -m pip install wheel
         python -m pip install --force-reinstall ./pglast
+        python -m pip install pytest pytest-snapshot
 
     - name: Checkout timescaledb
       uses: actions/checkout@v2

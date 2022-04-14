@@ -39,7 +39,8 @@ def visit_plpgsql(state, node, searchpath_secure=False):
     # for analysis.
     case ast.DoStmt():
       body = [b.arg.val for b in node.args if b.defname == 'as'][0]
-      raw = "CREATE PROCEDURE plpgsql_do_wrapper() LANGUAGE PLPGSQL AS $wrapper$ {} $wrapper$;".format(body)
+      # first character in dollar quoting can't be digit so we prefix with w
+      raw = "CREATE PROCEDURE plpgsql_do_wrapper() LANGUAGE PLPGSQL AS $w{wrapper}$ {body} $w{wrapper}$;".format(wrapper=id(node), body=body)
 
     case _:
       self.state.unknown("Unknown node in visit_plpgsql: {}".format(node))

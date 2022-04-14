@@ -1,4 +1,7 @@
 PS016: Unqualified function call: unsafe_call2
 PS016: Unqualified function call: unsafe_call3
+PS016: Unqualified function call: unsafe_call8
+PS016: Unqualified function call: unsafe_call10
+PS016: Unqualified function call: unsafe_call19
 
-Errors: 0 Warnings: 2 Unknown: 0
+Errors: 0 Warnings: 5 Unknown: 0

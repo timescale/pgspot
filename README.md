@@ -10,6 +10,9 @@ pgspot checks for the following vulnerabilities:
 - search_path-based attacks
 - unsafe object creation
 
+Consult the [reference](REFERENCE.md) for detailed documentation of the
+vulnerabilities which pgspot detects, and their potential mitigations.
+
 ## Useful links
 - [PostgreSQL security recommendations for extensions](https://www.postgresql.org/docs/current/extend-extensions.html#EXTEND-EXTENSIONS-SECURITY)
 

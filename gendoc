@@ -1,0 +1,18 @@
+#!/usr/bin/env python
+
+from codes import codes
+from textwrap import dedent
+
+header = """# Reference
+
+This document serves as a reference for the different vulnerabilities which
+pgspot detects.
+
+"""
+
+with open('REFERENCE.md', 'w') as ref:
+    ref.write(dedent(header))
+    for code, data in codes.items():
+        ref.write("## {}: {}".format(code, data['title']))
+        ref.write(dedent(data['description']))
+        ref.write("\n")

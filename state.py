@@ -13,18 +13,20 @@ class Counter():
     self.created_functions = list()
 
   def warn(self, code, context):
-    self.warnings += 1
-    if code not in codes:
-      raise ValueError
-    if not self.args.summary_only:
-      print("{}: {}: {}".format(code, codes[code]['title'], context))
+    if code not in self.args.ignore:
+      self.warnings += 1
+      if code not in codes:
+        raise ValueError
+      if not self.args.summary_only:
+        print("{}: {}: {}".format(code, codes[code]['title'], context))
 
   def error(self, code, context):
-    self.errors += 1
-    if code not in codes:
-      raise ValueError
-    if not self.args.summary_only:
-      print("{}: {}: {}".format(code, codes[code]['title'], context))
+    if code not in self.args.ignore:
+      self.errors += 1
+      if code not in codes:
+        raise ValueError
+      if not self.args.summary_only:
+        print("{}: {}: {}".format(code, codes[code]['title'], context))
 
   def unknown(self, message):
     self.unknowns += 1

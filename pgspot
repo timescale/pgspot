@@ -13,6 +13,7 @@ parser.add_argument("--proc-without-search-path",metavar="PROC",dest="proc_witho
 parser.add_argument("--summary-only",dest="summary_only",action="store_true",default=False,help="only print number of errors, warnings and unknowns")
 parser.add_argument("--plpgsql", action=BooleanOptionalAction, default=True, help="Analyze PLpgSQL code")
 parser.add_argument("--explain", dest="explain", default=None, help="Describe an error/warning code")
+parser.add_argument("--ignore", dest="ignore", action='append', default=list(), type=str, help="Ignore error or warning code")
 parser.add_argument('files',metavar='FILE',type=str,nargs='*',help='file to check for vulnerabilities')
 
 args = parser.parse_args()

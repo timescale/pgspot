@@ -1,5 +1,6 @@
 
 from pglast import ast, parse_sql, parse_plpgsql
+from pglast.parser import ParseError
 from pglast.stream import RawStream
 from pglast.visitors import Visitor
 from pglast.enums.parsenodes import VariableSetKind, TransactionStmtKind
@@ -220,6 +221,19 @@ class SQLVisitor(Visitor):
   def visit_FuncCall(self, ancestors, node):
     if len(node.funcname) != 2 and not self.state.searchpath_secure:
       self.state.warn("PS016", "{}".format(format_name(node.funcname)))
+    # Possibly evaluate argument to "sql-accepting" function
+    function_name = format_name(node.funcname[-1])
+    function_args = self.state.counter.args.sql_fn
+    if function_name in function_args:
+      for arg in node.args:
+        # we can only evaluate constant expressions
+        if isinstance(arg, ast.A_Const):
+          sql = arg.val.val
+          try:
+            # let's try and treat this as SQL. Might not work.
+            visit_sql(self.state, sql)
+          except ParseError:
+            pass
 
   def visit_RangeVar(self, ancestors, node):
     # a rangevar can reference CTEs which were previously defined

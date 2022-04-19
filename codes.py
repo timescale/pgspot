@@ -14,12 +14,12 @@ codes = {
         b) fully-qualifying the operator.
         
         An attacker could create a custom `+` operator and redirect execution to
-        their operator by either making thei operator have better matching types
+        their operator by either making their operator have better matching types
         or by modifying search_path so that an attacker-controlled schema is searched
         first.
         
         To mitigate, either
-        a) explicitly set the search path (TODO: here be dragons):
+        a) explicitly set the search path:
         
         ```
         SET search_path = pg_catalog;
@@ -221,7 +221,7 @@ codes = {
         
         To mitigate, either
         
-        a) explicitly set the search path (TODO: here be dragons):
+        a) explicitly set the search path:
         
         ```
         SET search_path = pg_catalog;
@@ -316,11 +316,11 @@ codes = {
         b) fully schema-qualifying the function.
         
         An attacker could create a custom `my_function` function and redirect execution
-        to their operator by either making their function has better-matching types or
+        to their function by either making their function have better-matching types or
         by modifying the search_path so that an attacker-controlled schema is searched
         first.
                 
-        Either a) explicitly set the search path (TODO: here be dragons).
+        Either a) explicitly set the search path.
         
         ```
         SET search_path = pg_catalog;
@@ -352,7 +352,7 @@ codes = {
         so that an attacker-controlled relation is referenced instead of the desired.
         This could result in erroneous behaviour of a routine or function.
                 
-        To mitigate this, either a) explicitly set the search path (TODO: here be dragons):
+        To mitigate this, either a) explicitly set the search path:
         
         ```
         SET search_path = extension_schema;

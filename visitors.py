@@ -146,6 +146,8 @@ class SQLVisitor(Visitor):
       self.state.error("PS006", "{}".format(format_name(node.type_name)))
 
   def visit_DefineStmt(self, ancestors, node):
+    if len(node.defnames) == 1 and not self.state.searchpath_secure:
+      self.state.warn("PS017", "{}".format(format_name(node.defnames)))
     if (hasattr(node, 'replace') and node.replace) or (hasattr(node, 'if_not_exists') and node.if_not_exists):
       if node.defnames[0].val not in self.state.created_schemas:
         self.state.error("PS007", "{}".format(format_name(node.defnames)))

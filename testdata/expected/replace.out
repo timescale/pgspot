@@ -1,3 +1,4 @@
+PS017: Unqualified object reference: unsafe_agg3
 PS007: Unsafe object creation: unsafe_agg3
 PS002: Unsafe function creation: unsafe_func4()
 PS005: Function without explicit search_path: unsafe_func4()
@@ -7,4 +8,4 @@ PS006: Unsafe transform creation: type6
 PS015: Unsafe view creation: view9
 PS017: Unqualified object reference: view9
 
-Errors: 5 Warnings: 3 Unknown: 0
+Errors: 5 Warnings: 4 Unknown: 0

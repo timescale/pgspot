@@ -1,0 +1,3 @@
+PS009: Unsafe CASE expression: CASE a OPERATOR(pg_catalog.=) b WHEN TRUE THEN 'true' WHEN FALSE THEN 'false' END
+
+Errors: 1 Warnings: 0 Unknown: 0

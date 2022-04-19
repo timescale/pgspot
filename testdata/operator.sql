@@ -1,0 +1,3 @@
+
+CREATE OPERATOR #? (LEFTARG=bool,RIGHTARG=bool,FUNCTION=boolge);
+

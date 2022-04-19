@@ -158,12 +158,6 @@ class SQLVisitor(Visitor):
       if node.kind == VariableSetKind.VAR_RESET:
         self.state.reset_searchpath()
 
-  def visit_AlterSeqStmt(self, ancestors, node):
-    # This is not really a problem inside extension scripts since search_path
-    # will be set to determined value but it might be inside function bodies.
-    if not node.sequence.schemaname and not self.state.searchpath_secure:
-      self.state.warn("PS008", "{}".format(node.sequence.relname))
-
   def visit_CaseExpr(self, ancestors, node):
     if node.arg and not self.state.searchpath_secure:
       self.state.error("PS009", "{}".format(raw_sql(node)))

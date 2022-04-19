@@ -195,7 +195,7 @@ codes = {
     'PS008': {
         'title': "Unqualified alter sequence",
         'description': """
-        TODO
+        NOTE: This warning is not produced. 
         """
     },
     'PS009': {

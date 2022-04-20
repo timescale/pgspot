@@ -338,7 +338,25 @@ codes = {
     "PS013": {
         "title": "Unsafe foreign server creation",
         "description": """
-        TODO
+        A foreign server was created using `IF NOT EXISTS`.
+        
+        Erroneous example:
+        
+        ```
+        CREATE SERVER IF NOT EXISTS s1 FOREIGN DATA WRAPPER postgres_fdw;
+        ```
+        
+        Using `CREATE ... IF NOT EXISTS` is insecure. An attacker may pre-create
+        the desired server, becoming owner of the server, allowing them to later
+        modify attributes of the server. Since a user needs USAGE privilege on
+        the FOREIGN DATA WRAPPER to create a server this might not be
+        exploitable in most enviroments.
+        
+        To mitigate this issue, use `CREATE SERVER` (without `IF NOT EXISTS`):
+        
+        ```
+        CREATE SERVER s1 FOREIGN DATA WRAPPER postgres_fdw;
+        ```
         """,
     },
     "PS014": {

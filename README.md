@@ -45,6 +45,8 @@ options:
   --sql-accepting SQL_FN
                         Specify one or more sql-accepting functions
 ```
+
+```
 > ./pgspot --ignore PS017 <<<"CREATE TABLE IF NOT EXISTS foo();"
 PS012: Unsafe table creation: foo
 

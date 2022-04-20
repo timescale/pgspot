@@ -1,7 +1,7 @@
 codes = {
-    'PS001': {
-        'title': "Unqualified operator",
-        'description': """
+    "PS001": {
+        "title": "Unqualified operator",
+        "description": """
         An operator was used with an unsafe search path, or not fully schema-qualified.
         
         Erroneous example:
@@ -31,11 +31,11 @@ codes = {
         ```
         SELECT foo OPERATOR(pg_catalog.+) bar;
         ``` 
-        """
+        """,
     },
-    'PS002': {
-        'title': "Unsafe function creation",
-        'description': """
+    "PS002": {
+        "title": "Unsafe function creation",
+        "description": """
         A function was created using `CREATE OR REPLACE` in an insecure schema.
         
         Erroneous example:
@@ -62,11 +62,11 @@ codes = {
         ```
         CREATE FUNCTION public.foo() RETURNS INTEGER LANGUAGE SQL AS $$SELECT 1;$$;
         ```
-        """
+        """,
     },
-    'PS003': {
-        'title': "SECURITY DEFINER function without explicit search_path",
-        'description': """
+    "PS003": {
+        "title": "SECURITY DEFINER function without explicit search_path",
+        "description": """
         A function with `SECURITY DEFINER` was created without setting a fixed search path.
         
         Erroneous example:
@@ -101,11 +101,11 @@ codes = {
             -- function body
         $$;
         ```
-        """
+        """,
     },
-    'PS004': {
-        'title': "SECURITY DEFINER function with insecure search_path",
-        'description': """
+    "PS004": {
+        "title": "SECURITY DEFINER function with insecure search_path",
+        "description": """
         A function with `SECURITY DEFINER` was created with an insecure search path.
         
         Erroneous example:
@@ -141,11 +141,11 @@ codes = {
             -- function body
         $$;
         ```
-        """
+        """,
     },
-    'PS005': {
-        'title': "Function without explicit search_path",
-        'description': """
+    "PS005": {
+        "title": "Function without explicit search_path",
+        "description": """
         A function was created without an explicit search_path defined.
         
         Erroneous example:
@@ -178,29 +178,29 @@ codes = {
         search path for a function (e.g. when it should be inlined, or participate in
         transactions). For this reason, PS005 is a warning, and can be ignored in those
         cases.
-        """
+        """,
     },
-    'PS006': {
-        'title': "Unsafe transform creation",
-        'description': """
+    "PS006": {
+        "title": "Unsafe transform creation",
+        "description": """
         TODO
-        """
+        """,
     },
-    'PS007': {
-        'title': "Unsafe object creation",
-        'description': """
+    "PS007": {
+        "title": "Unsafe object creation",
+        "description": """
         TODO
-        """
+        """,
     },
-    'PS008': {
-        'title': "Unqualified alter sequence",
-        'description': """
+    "PS008": {
+        "title": "Unqualified alter sequence",
+        "description": """
         NOTE: This warning is not produced. 
-        """
+        """,
     },
-    'PS009': {
-        'title': "Unsafe CASE expression",
-        'description': """
+    "PS009": {
+        "title": "Unsafe CASE expression",
+        "description": """
         A "simple" `CASE` expression was used without a secure search_path.
         
         Erroneous example:
@@ -243,11 +243,11 @@ codes = {
             END
         FROM my_schema.foo;
         ```
-        """
+        """,
     },
-    'PS010': {
-        'title': "Unsafe schema creation",
-        'description': """
+    "PS010": {
+        "title": "Unsafe schema creation",
+        "description": """
         A schema was created using `IF NOT EXISTS`.
         
         Erroneous example:
@@ -269,41 +269,41 @@ codes = {
         
         If the schema already exists when the extension is installed, then this
         statement will fail, which is desired behaviour.
-        """
+        """,
     },
-    'PS011': {
-        'title': "Unsafe sequence creation",
-        'description': """
+    "PS011": {
+        "title": "Unsafe sequence creation",
+        "description": """
         TODO
-        """
+        """,
     },
-    'PS012': {
-        'title': "Unsafe table creation",
-        'description': """
+    "PS012": {
+        "title": "Unsafe table creation",
+        "description": """
         TODO
-        """
+        """,
     },
-    'PS013': {
-        'title': "Unsafe foreign server creation",
-        'description': """
+    "PS013": {
+        "title": "Unsafe foreign server creation",
+        "description": """
         TODO
-        """
+        """,
     },
-    'PS014': {
-        'title': "Unsafe index creation",
-        'description': """
+    "PS014": {
+        "title": "Unsafe index creation",
+        "description": """
         TODO
-        """
+        """,
     },
-    'PS015': {
-        'title': "Unsafe view creation",
-        'description': """
+    "PS015": {
+        "title": "Unsafe view creation",
+        "description": """
         TODO
-        """
+        """,
     },
-    'PS016': {
-        'title': "Unqualified function call",
-        'description': """
+    "PS016": {
+        "title": "Unqualified function call",
+        "description": """
         A function was used with an unsafe search path, or not fully schema-qualified.
         
         Erroneous example:
@@ -332,11 +332,11 @@ codes = {
         ```
         SELECT extension_schema.my_function(foo);
         ``` 
-        """
+        """,
     },
-    'PS017': {
-        'title': "Unqualified object reference",
-        'description': """
+    "PS017": {
+        "title": "Unqualified object reference",
+        "description": """
         An object was referenced with an unsafe search path, or not fully schema-qualified.
         
         Erroneous example:
@@ -364,6 +364,6 @@ codes = {
         ```
         SELECT * FROM extension_schema.foo;
         ```
-        """
+        """,
     },
 }

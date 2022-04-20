@@ -1,11 +1,11 @@
 let
   # pin nixpkgs to a specific version, so that we're not relying on the system version
   pkgs = import (builtins.fetchGit {
-    name = "nixpkgs-21.11";
+    name = "nixpkgs-unstable";
     url = "https://github.com/nixos/nixpkgs/";
     # `git ls-remote https://github.com/nixos/nixpkgs nixos-unstable`
-    ref = "refs/tags/21.11";
-    rev = "506445d88e183bce80e47fc612c710eb592045ed";
+    ref = "refs/heads/nixpkgs-unstable";
+    rev = "bd4dffcdb7c577d74745bd1eff6230172bd176d5";
   }) {};
 
   # Use svenklemm's fork of pglast, which adds support for SET, COMMIT, ROLLBACK, CALL
@@ -25,6 +25,7 @@ let
   py310 = pkgs.python310;
   py-with-packages = py310.withPackages (p: with p; [
     pglast
+    p.black
     p.pytest
     p.pytest-snapshot
   ]);

@@ -344,7 +344,23 @@ codes = {
     "PS014": {
         "title": "Unsafe index creation",
         "description": """
-        TODO
+        An index was created using `IF NOT EXISTS`.
+        
+        Erroneous example:
+        
+        ```
+        CREATE INDEX IF NOT EXISTS i1 ON t(time);
+        ```
+        
+        Using `CREATE ... IF NOT EXISTS` is insecure. An attacker can pre-create
+        the index preventing the creation of unique constraints on the table.
+        Indexes may also be used to execute malicious code.
+        
+        To mitigate this issue use `CREATE INDEX` (without `IF NOT EXISTS`):
+        
+        ```
+        CREATE INDEX i1 ON t(time);
+        ```
         """,
     },
     "PS015": {

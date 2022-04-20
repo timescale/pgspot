@@ -307,7 +307,23 @@ CREATE TABLE public.test_table(col text);
 TODO
 
 ## PS014: Unsafe index creation
-TODO
+An index was created using `IF NOT EXISTS`.
+
+Erroneous example:
+
+```
+CREATE INDEX IF NOT EXISTS i1 ON t(time);
+```
+
+Using `CREATE ... IF NOT EXISTS` is insecure. An attacker can pre-create
+the index preventing the creation of unique constraints on the table.
+Indexes may also be used to execute malicious code.
+
+To mitigate this issue use `CREATE INDEX` (without `IF NOT EXISTS`):
+
+```
+CREATE INDEX i1 ON t(time);
+```
 
 ## PS015: Unsafe view creation
 A view was created using `CREATE OR REPLACE` in an insecure schema.

@@ -33,6 +33,12 @@ jobs:
       run: |
         pytest --ignore-glob 'pglast/**'
 
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: psf/black@stable
+
   doc:
     runs-on: ubuntu-latest
 

@@ -189,7 +189,33 @@ codes = {
     "PS007": {
         "title": "Unsafe object creation",
         "description": """
-        TODO
+        An object was created using `CREATE OR REPLACE` in an insecure schema.
+        
+        Erroneous example:
+        
+        ```
+        CREATE OR REPLACE AGGREGATE public.aggregate(BASETYPE=my_type,SFUNC=agg_sfunc,STYPE=internal);
+        ```
+        
+        Using `CREATE OR REPLACE` in a schema which is not owned by the extension is
+        insecure. An attacker can pre-create the desired object, becoming owner of
+        the object, and allowing them to later change attributes of object. This
+        ultimately leads to malicious code execution.
+        
+        To mitigate this issue, either
+        
+        a) Use `CREATE OR REPLACE ...` in an extension-owned schema:
+        
+        ```
+        CREATE SCHEMA extension_schema;
+        CREATE OR REPLACE AGGREGATE extension_schema.aggregate(BASETYPE=my_type,SFUNC=agg_sfunc,STYPE=internal);
+        ```
+        
+        or b) use `CREATE ...` (without `OR REPLACE`):
+        
+        ```
+        CREATE AGGREGATE public.aggregate(SFUNC=agg_sfunc,STYPE=internal);
+        ```
         """,
     },
     "PS008": {
@@ -280,7 +306,33 @@ codes = {
     "PS012": {
         "title": "Unsafe table creation",
         "description": """
-        TODO
+        A table was created using `IF NOT EXISTS` in an insecure schema.
+        
+        Erroneous example:
+        
+        ```
+        CREATE TABLE IF NOT EXISTS public.test_table(col text);
+        ```
+        
+        Using `CREATE ... IF NOT EXISTS` in a schema which is not owned by the
+        extension is insecure. An attacker can pre-create the desired table, becoming
+        owner of the table, allowing them to later modify attributes of the table. This
+        ultimately leads to malicious code execution.
+        
+        To mitigate this issue, either
+        
+        a) Use `CREATE TABLE IF NOT EXISTS` in an extension-owned schema:
+        
+        ```
+        CREATE SCHEMA extension_schema;
+        CREATE TABLE IF NOT EXISTS extension_schema.test_table(col text);
+        ```
+        
+        or b) use `CREATE TABLE` (without `IF NOT EXISTS`):
+        
+        ```
+        CREATE TABLE public.test_table(col text);
+        ```
         """,
     },
     "PS013": {
@@ -298,7 +350,33 @@ codes = {
     "PS015": {
         "title": "Unsafe view creation",
         "description": """
-        TODO
+        A view was created using `CREATE OR REPLACE` in an insecure schema.
+        
+        Erroneous example:
+        
+        ```
+        CREATE OR REPLACE VIEW public.test_view AS SELECT pg_catalog.now();
+        ```
+        
+        Using `CREATE OR REPLACE` in a schema which is not owned by the extension is
+        insecure. An attacker can pre-create the desired view, becoming owner of
+        the view, allowing them to later modify the view. This ultimately leads to
+        malicious code execution.
+        
+        To mitigate this issue, either
+        
+        a) Use `CREATE OR REPLACE VIEW` in an extension-owned schema:
+        
+        ```
+        CREATE SCHEMA extension_schema;
+        CREATE OR REPLACE VIEW extension_schema.test_view AS SELECT pg_catalog.now();
+        ```
+        
+        or b) use `CREATE VIEW` (without `OR REPLACE`):
+        
+        ```
+        CREATE VIEW public.test_view AS SELECT pg_catalog.now();
+        ```
         """,
     },
     "PS016": {

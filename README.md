@@ -25,7 +25,7 @@ vulnerabilities which pgspot detects, and their potential mitigations.
 
 ```
 > ./pgspot -h
-usage: pgspot [-h] [-a] [--proc-without-search-path PROC] [--summary-only] [--plpgsql | --no-plpgsql] [--explain EXPLAIN] [--ignore IGNORE] [FILE ...]
+usage: pgspot [-h] [-a] [--proc-without-search-path PROC] [--summary-only] [--plpgsql | --no-plpgsql] [--explain EXPLAIN] [--ignore IGNORE] [--sql-accepting SQL_FN] [FILE ...]
 
 Spot vulnerabilities in PostgreSQL SQL scripts
 
@@ -42,8 +42,8 @@ options:
                         Analyze PLpgSQL code (default: True)
   --explain EXPLAIN     Describe an error/warning code
   --ignore IGNORE       Ignore error or warning code
-```
-
+  --sql-accepting SQL_FN
+                        Specify one or more sql-accepting functions
 ```
 > ./pgspot --ignore PS017 <<<"CREATE TABLE IF NOT EXISTS foo();"
 PS012: Unsafe table creation: foo
@@ -51,3 +51,14 @@ PS012: Unsafe table creation: foo
 Errors: 1 Warnings: 0 Unknown: 0
 ```
 
+#### SQL-accepting functions
+
+It is a common pattern that SQL-accepting functions exist, which take a
+string-like argument which will be executed as SQL. This can "hide" some SQL
+from pgspot, as the string-like argument masks the SQL. With the
+`--sql-accepting` argument, pgspot can be told about such functions.
+
+Assuming a function named `execute_sql` which takes a SQL string as its first
+argument, and executes it. With `pgspot --sql-accepting=execute_sql` we can
+tell pgspot `execute_sql` may accept SQL. pgspot will attempt to unpack and
+evaluate all arguments to that function as SQL.

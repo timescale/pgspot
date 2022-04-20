@@ -170,7 +170,23 @@ transactions). For this reason, PS005 is a warning, and can be ignored in those
 cases.
 
 ## PS006: Unsafe transform creation
-TODO
+A transform was created using `CREATE OR REPLACE`.
+
+Erroneous example:
+
+```
+CREATE OR REPLACE TRANSFORM rxid FOR LANGUAGE plpgsql(from sql with function f1);
+```
+
+This warning is produced for consistency with all the other `CREATE OR REPLACE`
+statements. Currently this cannot be exploited to escalate privileges as the steps
+required to set this up require superuser privileges.
+
+To mitigate this issue, use `CREATE ...` (without `OR REPLACE`):
+
+```
+CREATE TRANSFORM rxid FOR LANGUAGE plpgsql(from sql with function f1);
+```
 
 ## PS007: Unsafe object creation
 An object was created using `CREATE OR REPLACE` in an insecure schema.

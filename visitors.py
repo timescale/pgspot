@@ -162,7 +162,7 @@ class SQLVisitor(Visitor):
 
     def visit_CreateTransformStmt(self, ancestors, node):
         if node.replace:
-            self.state.error("PS006", "{}".format(format_name(node.type_name)))
+            self.state.warn("PS006", "{}".format(format_name(node.type_name)))
 
     def visit_DefineStmt(self, ancestors, node):
         if len(node.defnames) == 1 and not self.state.searchpath_secure:

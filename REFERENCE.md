@@ -176,7 +176,7 @@ TODO
 TODO
 
 ## PS008: Unqualified alter sequence
-TODO
+NOTE: This warning is not produced. 
 
 ## PS009: Unsafe CASE expression
 A "simple" `CASE` expression was used without a secure search_path.

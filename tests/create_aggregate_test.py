@@ -4,7 +4,7 @@ import shlex
 
 def test_create_old_style_aggregate():
     sql = """
-    CREATE AGGREGATE aggregate(SFUNC=agg_sfunc,STYPE=internal);
+    CREATE AGGREGATE aggregate(BASETYPE=complex,SFUNC=agg_sfunc,STYPE=internal);
     """
     result = subprocess.run(
         ["echo {} | python pgspot".format(shlex.quote(sql))],

@@ -183,7 +183,23 @@ codes = {
     "PS006": {
         "title": "Unsafe transform creation",
         "description": """
-        TODO
+        A transform was created using `CREATE OR REPLACE`.
+        
+        Erroneous example:
+        
+        ```
+        CREATE OR REPLACE TRANSFORM rxid FOR LANGUAGE plpgsql(from sql with function f1);
+        ```
+
+        This warning is produced for consistency with all the other `CREATE OR REPLACE`
+        statements. Currently this cannot be exploited to escalate privileges as the steps
+        required to set this up require superuser privileges.
+        
+        To mitigate this issue, use `CREATE ...` (without `OR REPLACE`):
+        
+        ```
+        CREATE TRANSFORM rxid FOR LANGUAGE plpgsql(from sql with function f1);
+        ```
         """,
     },
     "PS007": {

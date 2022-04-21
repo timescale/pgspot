@@ -1,5 +1,5 @@
 from pglast import ast
-from codes import codes
+from .codes import codes
 
 
 class Counter:

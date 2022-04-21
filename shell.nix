@@ -26,8 +26,10 @@ let
   py-with-packages = py310.withPackages (p: with p; [
     pglast
     p.black
-    p.pytest
-    p.pytest-snapshot
+    p.tox
+    p.setuptools
+    p.build
+    p.twine
   ]);
 
 in

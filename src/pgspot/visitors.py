@@ -3,8 +3,8 @@ from pglast.parser import ParseError
 from pglast.stream import RawStream
 from pglast.visitors import Visitor
 from pglast.enums.parsenodes import VariableSetKind, TransactionStmtKind, ObjectType
-from formatters import raw_sql, format_name, format_function, format_aggregate
-from state import State
+from .formatters import raw_sql, format_name, format_function, format_aggregate
+from .state import State
 import re
 
 

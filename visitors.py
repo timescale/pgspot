@@ -47,7 +47,7 @@ def visit_plpgsql(state, node, searchpath_secure=False):
             )
 
         case _:
-            self.state.unknown("Unknown node in visit_plpgsql: {}".format(node))
+            state.unknown("Unknown node in visit_plpgsql: {}".format(node))
             return
 
     parsed = parse_plpgsql(raw)

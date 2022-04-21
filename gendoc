@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from codes import codes
+from src.pgspot.codes import codes
 from textwrap import dedent
 
 header = """# Reference

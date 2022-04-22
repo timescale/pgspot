@@ -9,9 +9,6 @@ class Counter:
         self.unknowns = 0
         self.errors = 0
 
-        self.created_schemas = list()
-        self.created_functions = list()
-
     def warn(self, code, context):
         if code not in self.args.ignore:
             self.warnings += 1
@@ -47,6 +44,7 @@ class State:
         self.counter = counter
         self.args = counter.args
         self.created_schemas = list()
+        self.created_aggregates = list()
         self.created_functions = list()
         self.searchpath_secure = False
         self.searchpath_local = False

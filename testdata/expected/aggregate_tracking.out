@@ -1,0 +1,10 @@
+PS007: Unsafe object creation: s1.agg3(integer)
+PS007: Unsafe object creation: s1.agg3(integer)
+PS007: Unsafe object creation: s2.agg6(integer)
+PS017: Unqualified object reference: agg6
+PS007: Unsafe object creation: agg6(integer)
+PS007: Unsafe object creation: s1.agg6(integer,integer)
+PS007: Unsafe object creation: s3.agg14(int8)
+PS007: Unsafe object creation: s3.agg14(int8)
+
+Errors: 7 Warnings: 1 Unknown: 0

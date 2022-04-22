@@ -33,3 +33,20 @@ def format_function(node):
     else:
         args = ""
     return "{}({})".format(format_name(node.funcname), args)
+
+
+def format_aggregate(node):
+    if node.oldstyle:
+        basetype = [b.arg.names for b in node.definition if b.defname == "basetype"]
+        if basetype:
+            basetype = basetype[0]
+
+        if not basetype:
+            args = ""
+        elif len(basetype) == 2 and basetype[0].val == "pg_catalog":
+            args = basetype[1].val
+        else:
+            args = ",".join([s.val for s in basetype])
+    else:
+        args = ",".join([raw_sql(arg.argType) for arg in node.args[0]])
+    return "{}({})".format(format_name(node.defnames), args)

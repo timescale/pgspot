@@ -1,5 +1,5 @@
 PS017: Unqualified object reference: unsafe_agg3
-PS007: Unsafe object creation: unsafe_agg3
+PS007: Unsafe object creation: unsafe_agg3()
 PS002: Unsafe function creation: unsafe_func4()
 PS005: Function without explicit search_path: unsafe_func4()
 PS002: Unsafe function creation: unsafe_proc5()

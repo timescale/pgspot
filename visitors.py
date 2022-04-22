@@ -2,8 +2,8 @@ from pglast import ast, parse_sql, parse_plpgsql
 from pglast.parser import ParseError
 from pglast.stream import RawStream
 from pglast.visitors import Visitor
-from pglast.enums.parsenodes import VariableSetKind, TransactionStmtKind
-from formatters import raw_sql, format_name, format_function
+from pglast.enums.parsenodes import VariableSetKind, TransactionStmtKind, ObjectType
+from formatters import raw_sql, format_name, format_function, format_aggregate
 from state import State
 import re
 
@@ -167,11 +167,34 @@ class SQLVisitor(Visitor):
     def visit_DefineStmt(self, ancestors, node):
         if len(node.defnames) == 1 and not self.state.searchpath_secure:
             self.state.warn("PS017", "{}".format(format_name(node.defnames)))
-        if (hasattr(node, "replace") and node.replace) or (
-            hasattr(node, "if_not_exists") and node.if_not_exists
-        ):
-            if node.defnames[0].val not in self.state.created_schemas:
-                self.state.error("PS007", "{}".format(format_name(node.defnames)))
+
+        match node.kind:
+            # CREATE AGGREGATE
+            case ObjectType.OBJECT_AGGREGATE:
+                if node.replace:
+                    if format_aggregate(node) not in self.state.created_aggregates:
+                        if (
+                            len(node.defnames) != 2
+                            or node.defnames[0].val not in self.state.created_schemas
+                        ):
+                            self.state.error(
+                                "PS007", "{}".format(format_aggregate(node))
+                            )
+
+                if not node.replace:
+                    self.state.created_aggregates.append(format_aggregate(node))
+
+            case _:
+                if (hasattr(node, "replace") and node.replace) or (
+                    hasattr(node, "if_not_exists") and node.if_not_exists
+                ):
+                    if (
+                        len(node.defnames) != 2
+                        or node.defnames[0].val not in self.state.created_schemas
+                    ):
+                        self.state.error(
+                            "PS007", "{}".format(format_name(node.defnames))
+                        )
 
     def visit_VariableSetStmt(self, ancestors, node):
         # only search_path relevant

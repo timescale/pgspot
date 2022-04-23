@@ -1,11 +1,11 @@
-PS017: Unqualified object reference: unsafe_agg3
-PS007: Unsafe object creation: unsafe_agg3()
-PS002: Unsafe function creation: unsafe_func4()
-PS005: Function without explicit search_path: unsafe_func4()
-PS002: Unsafe function creation: unsafe_proc5()
-PS005: Function without explicit search_path: unsafe_proc5()
-PS006: Unsafe transform creation: type6
-PS015: Unsafe view creation: view9
-PS017: Unqualified object reference: view9
+PS017: Unqualified object reference: unsafe_agg3 at line 1
+PS007: Unsafe object creation: unsafe_agg3() at line 1
+PS002: Unsafe function creation: unsafe_func4() at line 4
+PS005: Function without explicit search_path: unsafe_func4() at line 4
+PS002: Unsafe function creation: unsafe_proc5() at line 5
+PS005: Function without explicit search_path: unsafe_proc5() at line 5
+PS006: Unsafe transform creation: type6 at line 6
+PS015: Unsafe view creation: view9 at line 7
+PS017: Unqualified object reference: view9 at line 7
 
 Errors: 4 Warnings: 5 Unknown: 0

@@ -1,18 +1,18 @@
-PS017: Unqualified object reference: collation3
-PS007: Unsafe object creation: collation3
-PS012: Unsafe table creation: unsafe_table4
-PS017: Unqualified object reference: unsafe_table4
-PS014: Unsafe index creation: index5
-PS017: Unqualified object reference: table5
-PS007: Unsafe object creation: matview6
-PS017: Unqualified object reference: matview6
-PS010: Unsafe schema creation: schema7
-PS011: Unsafe sequence creation: sequence8
-PS017: Unqualified object reference: sequence8
-PS013: Unsafe foreign server creation: server9
-PS012: Unsafe table creation: table10
-PS017: Unqualified object reference: table10
-PS007: Unsafe object creation: table11
-PS017: Unqualified object reference: table11
+PS017: Unqualified object reference: collation3 at line 1
+PS007: Unsafe object creation: collation3 at line 1
+PS012: Unsafe table creation: unsafe_table4 at line 4
+PS017: Unqualified object reference: unsafe_table4 at line 4
+PS014: Unsafe index creation: index5 at line 5
+PS017: Unqualified object reference: table5 at line 5
+PS007: Unsafe object creation: matview6 at line 6
+PS017: Unqualified object reference: matview6 at line 6
+PS010: Unsafe schema creation: schema7 at line 7
+PS011: Unsafe sequence creation: sequence8 at line 8
+PS017: Unqualified object reference: sequence8 at line 8
+PS013: Unsafe foreign server creation: server9 at line 9
+PS012: Unsafe table creation: table10 at line 10
+PS017: Unqualified object reference: table10 at line 10
+PS007: Unsafe object creation: table11 at line 11
+PS017: Unqualified object reference: table11 at line 11
 
 Errors: 9 Warnings: 7 Unknown: 0

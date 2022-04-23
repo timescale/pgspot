@@ -9,21 +9,42 @@ class Counter:
         self.unknowns = 0
         self.errors = 0
 
+        # for tracking current position in input stream
+        # only toplevel visitor should update these
+        self.sql = ""
+        self.stmt_location = 0
+
+    def print_issue(self, code, context):
+        if code not in codes:
+            raise ValueError
+        if not self.args.summary_only:
+            line = self.line_number()
+            title = codes[code]["title"]
+            print(
+                "{code}: {title}: {context} at line {line}".format(
+                    code=code, title=title, context=context, line=line
+                )
+            )
+
     def warn(self, code, context):
         if code not in self.args.ignore:
             self.warnings += 1
-            if code not in codes:
-                raise ValueError
-            if not self.args.summary_only:
-                print("{}: {}: {}".format(code, codes[code]["title"], context))
+            self.print_issue(code, context)
 
     def error(self, code, context):
         if code not in self.args.ignore:
             self.errors += 1
-            if code not in codes:
-                raise ValueError
-            if not self.args.summary_only:
-                print("{}: {}: {}".format(code, codes[code]["title"], context))
+            self.print_issue(code, context)
+
+    # Unfortunately the line_number handling is not perfect.
+    # This will be the line of the first character after the
+    # previous statement has ended. On files with comments
+    # before a statement it will indicate the line with comments
+    # instead of the line with the actual statement.
+    # Since these numbers are reported to us by pglast/libpg_query
+    # there is not much more here we can do to improve accuracy.
+    def line_number(self):
+        return 1 + self.sql.count("\n", 0, self.stmt_location + 1)
 
     def unknown(self, message):
         self.unknowns += 1

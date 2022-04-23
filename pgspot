@@ -26,7 +26,7 @@ if args.files:
   if args.append:
     # treat all files as single unit during processing
     data = "\n".join([open(f).read() for f in args.files])
-    visit_sql(State(counter), data)
+    visit_sql(State(counter), data, toplevel=True)
 
   else:
     # process each file individually
@@ -35,7 +35,7 @@ if args.files:
         print("\n{}\n".format(f))
       data = open(f).read()
 
-      visit_sql(State(counter), data)
+      visit_sql(State(counter), data, toplevel=True)
 
 elif args.explain:
   code = args.explain
@@ -50,7 +50,7 @@ else:
   # read from stdin
   data = sys.stdin.read()
 
-  visit_sql(State(counter), data)
+  visit_sql(State(counter), data, toplevel=True)
 
 print(counter)
 

@@ -8,7 +8,7 @@ from state import State
 import re
 
 
-def visit_sql(state, sql, searchpath_secure=False):
+def visit_sql(state, sql, searchpath_secure=False, toplevel=False):
     # We have to iterate over toplevel items ourselves cause the visitor does
     # breadth-first iteration, which would conflict with our search_path state
     # tracking.
@@ -24,8 +24,13 @@ def visit_sql(state, sql, searchpath_secure=False):
     # SQL, so we comment out all psql meta commands before parsing.
     sql = re.sub(r"^\\", "-- \\\\", sql, flags=re.MULTILINE)
 
+    if toplevel:
+        state.counter.sql = sql
+
     visitor = SQLVisitor(state)
     for stmt in parse_sql(sql):
+        if toplevel:
+            state.counter.stmt_location = stmt.stmt_location
         visitor(stmt)
 
 

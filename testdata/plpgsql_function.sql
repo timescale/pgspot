@@ -12,10 +12,9 @@ CREATE FUNCTION plpgsqlfunc8() RETURNS TEXT LANGUAGE PLPGSQL AS $$ BEGIN PERFORM
 SET search_path TO pg_catalog;
 CREATE FUNCTION plpgsqlfunc13() RETURNS TEXT LANGUAGE PLPGSQL AS $$ BEGIN SELECT unsafe_call13(); END; $$;
 
--- plpgsql support in the parser is very rudimentary eg SET/RESET
--- will make the parser throw an error
 CREATE FUNCTION plpgsqlfunc16() RETURNS TEXT LANGUAGE PLPGSQL AS $$
 BEGIN
+  ASSERT true;
   SELECT unsafe_call17();
   SET search_path TO pg_catalog;
   SELECT safe_call19();

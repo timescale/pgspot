@@ -11,14 +11,14 @@ let
   # Use svenklemm's fork of pglast, which adds support for SET, COMMIT, ROLLBACK, CALL
   pglast = pkgs.python310Packages.buildPythonPackage rec {
     name = "pglast";
-    version = "af4b9b1c4c3011e82f9bdec357136fa779a22e79";
+    version = "1d567ac31b83785d2ef38602203213d360182b1e";
 
     src = pkgs.fetchFromGitHub {
       owner = "svenklemm";
       repo = "${name}";
       rev = "${version}";
       fetchSubmodules = true;
-      sha256 = "sha256-fxGQOwr/MyA48F0qHbhsfb/KCusq/T7GgUwCFNW6Mvg";
+      sha256 = "sha256-9ika8Nb8fB9xwigqS49AIBiW4vCpVQxbzPcg2/7iY3c";
     };
   };
 

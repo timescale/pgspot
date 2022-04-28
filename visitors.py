@@ -249,6 +249,13 @@ class SQLVisitor(Visitor):
         ):
             self.state.error("PS014", "{}".format(format_name(node.idxname)))
 
+    def visit_TypeCast(self, ancestors, node):
+        if len(node.typeName.names) == 1 and not self.state.searchpath_secure:
+            self.state.error(
+                "PS017",
+                "{} in {}".format(format_name(node.typeName.names), RawStream()(node)),
+            )
+
     def visit_ViewStmt(self, ancestors, node):
         if (
             "schemaname" in node.view

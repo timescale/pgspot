@@ -282,7 +282,7 @@ class SQLVisitor(Visitor):
             case "plpgsql":
                 visit_plpgsql(self.state, node, self.state.searchpath_secure)
             case _:
-                raise Exception("Unknown language: {}".format(language))
+                self.state.unknown("Unknown language: {}".format(language))
 
     def visit_FuncCall(self, ancestors, node):
         if len(node.funcname) != 2 and not self.state.searchpath_secure:

@@ -21,3 +21,9 @@ BEGIN
   $i$;
 END;
 $$;
+
+-- unknown language
+DO LANGUAGE PLLUA $$
+  print("Hello World")
+$$;
+

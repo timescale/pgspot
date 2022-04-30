@@ -10,4 +10,5 @@ PS005: Function without explicit search_path: plpgsqlfunc16() at line 14
 PS016: Unqualified function call: unsafe_call17 at line 14
 PS016: Unqualified function call: unsafe_call21 at line 14
 
-Errors: 0 Warnings: 11 Unknown: 0
+ Errors: 0 Warnings: 11 Unknown: 0 
+

@@ -11,4 +11,5 @@ PS005: Function without explicit search_path: f8(integer) at line 12
 PS005: Function without explicit search_path: safe16() at line 15
 PS016: Unqualified function call: unsafe_call18 at line 15
 
-Errors: 2 Warnings: 10 Unknown: 0
+ Errors: 2 Warnings: 10 Unknown: 0 
+

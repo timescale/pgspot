@@ -29,13 +29,25 @@ if args.files:
     visit_sql(State(counter), data, toplevel=True)
 
   else:
+    linebreak = '' if args.summary_only else '\n'
     # process each file individually
     for f in args.files:
       if len(args.files) > 1:
-        print("\n{}\n".format(f))
+        print("{}: ".format(f), end=linebreak)
       data = open(f).read()
 
-      visit_sql(State(counter), data, toplevel=True)
+      file_counter = Counter(args)
+      try:
+        visit_sql(State(file_counter), data, toplevel=True)
+      except Exception as err:
+        print(linebreak, file_counter, linebreak, err)
+      else:
+        print(linebreak, file_counter, linebreak)
+
+      counter.add(file_counter)
+
+    if len(args.files) > 1:
+      print('TOTAL:', counter)
 
 elif args.explain:
   code = args.explain
@@ -52,7 +64,7 @@ else:
 
   visit_sql(State(counter), data, toplevel=True)
 
-print(counter)
+  print(counter)
 
 if not counter.is_clean():
   sys.exit(1)

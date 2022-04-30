@@ -9,4 +9,5 @@ PS016: Unqualified function call: unsafe_call19 at line 20
 PS005: Function without explicit search_path: f25_nested_no_path() at line 23
 PS016: Unqualified function call: unsafe_call25 at line 23
 
-Errors: 0 Warnings: 10 Unknown: 0
+ Errors: 0 Warnings: 10 Unknown: 0 
+

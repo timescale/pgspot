@@ -6,4 +6,5 @@ PS005: Function without explicit search_path: sqlfunc() at line 11
 PS016: Unqualified function call: unsafe_call13 at line 11
 PS016: Unqualified function call: unsafe_call17 at line 11
 
-Errors: 0 Warnings: 7 Unknown: 0
+ Errors: 0 Warnings: 7 Unknown: 0 
+

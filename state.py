@@ -14,6 +14,11 @@ class Counter:
         self.sql = ""
         self.stmt_location = 0
 
+    def add(self, counter):
+        self.warnings += counter.warnings
+        self.unknowns += counter.unknowns
+        self.errors += counter.errors
+
     def print_issue(self, code, context):
         if code not in codes:
             raise ValueError
@@ -55,7 +60,7 @@ class Counter:
         return self.errors + self.warnings + self.unknowns == 0
 
     def __str__(self):
-        return "\nErrors: {} Warnings: {} Unknown: {}".format(
+        return "Errors: {} Warnings: {} Unknown: {}".format(
             self.errors, self.warnings, self.unknowns
         )
 

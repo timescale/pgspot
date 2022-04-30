@@ -1,1 +1,1 @@
-pglast @ git+https://github.com/svenklemm/pglast@1d567ac31b83785d2ef38602203213d360182b1e
+pglast @ git+https://github.com/svenklemm/pglast@01853619c0ecc4fe531bb0cdbe1207cd090dcc71

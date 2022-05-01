@@ -1,5 +1,5 @@
 
-SET search_path TO pg_catalog;
+SET search_path TO pg_catalog, pg_temp;
 
 -- safe since search_path is locked down
 SELECT safe_call5();
@@ -12,7 +12,7 @@ SELECT safe_call10();
 RESET search_path;
 
 BEGIN;
-SET LOCAL search_path TO pg_catalog;
+SET LOCAL search_path TO pg_catalog, pg_temp;
 -- safe since search_path is still locked down
 SELECT safe_call17();
 COMMIT;
@@ -21,7 +21,7 @@ COMMIT;
 SELECT unsafe_call21();
 
 BEGIN;
-SET LOCAL search_path TO pg_catalog;
+SET LOCAL search_path TO pg_catalog, pg_temp;
 -- safe since search_path is still locked down
 SELECT safe_call26();
 ROLLBACK;

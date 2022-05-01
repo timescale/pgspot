@@ -131,7 +131,7 @@ class SQLVisitor(Visitor):
         ]
 
         if setter:
-            body_secure = self.state.is_secure_searchpath(setter)
+            body_secure = self.state.is_secure_searchpath(setter[0])
         else:
             body_secure = False
 

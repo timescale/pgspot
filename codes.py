@@ -22,7 +22,7 @@ codes = {
         a) explicitly set the search path:
         
         ```
-        SET search_path = pg_catalog;
+        SET search_path = pg_catalog, pg_temp;
         SELECT foo + bar;
         ```
         
@@ -89,13 +89,13 @@ codes = {
         these functions, as it prevents a number of attacks which rely on an insecure
         `search_path`.
         
-        To mitigate, set the `search_path` to the secure search path `pg_catalog`
+        To mitigate, set the `search_path` to the secure search path `pg_catalog, pg_temp`
         
         ```
         CREATE FUNCTION my_extension.security_definer_function()
             RETURNS VOID
             SECURITY DEFINER
-            SET search_path = pg_catalog
+            SET search_path = pg_catalog, pg_temp
             LANGUAGE SQL
         AS $$
             -- function body
@@ -129,13 +129,13 @@ codes = {
         these functions, as it prevents a number of attacks which rely on an insecure
         `search_path`.
         
-        To mitigate, set the `search_path` to the secure search path `pg_catalog`
+        To mitigate, set the `search_path` to the secure search path `pg_catalog, pg_temp`
         
         ```
         CREATE FUNCTION my_extension.security_definer_function()
             RETURNS VOID
             SECURITY DEFINER
-            SET search_path = pg_catalog
+            SET search_path = pg_catalog, pg_temp
             LANGUAGE SQL
         AS $$
             -- function body
@@ -162,12 +162,12 @@ codes = {
         In general, it is preferable to define an explicit search path for functions,
         as this can prevent insecure search_path attacks.
         
-        To mitigate, set the `search_path` to the secure search path `pg_catalog`
+        To mitigate, set the `search_path` to the secure search path `pg_catalog, pg_temp`
         
         ```
         CREATE FUNCTION my_extension.function()
             RETURNS VOID
-            SET search_path = pg_catalog
+            SET search_path = pg_catalog, pg_temp
             LANGUAGE SQL
         AS $$
             -- function body
@@ -266,7 +266,7 @@ codes = {
         a) explicitly set the search path:
         
         ```
-        SET search_path = pg_catalog;
+        SET search_path = pg_catalog, pg_temp;
         SELECT
             CASE a = b
                 WHEN true THEN 'true'
@@ -477,7 +477,7 @@ codes = {
         Either a) explicitly set the search path.
         
         ```
-        SET search_path = pg_catalog;
+        SET search_path = pg_catalog, pg_temp;
         SELECT my_function(foo);
         ```
         

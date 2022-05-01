@@ -87,23 +87,35 @@ class State:
         self.searchpath_secure = False
         self.searchpath_local = False
 
-    # we consider the search path safe when it only contains
-    # pg_catalog and any schema created in this script
-    def is_secure_searchpath(self, setters):
-        secure = False
-
+    def extract_schemas(self, setters):
         match (setters):
             case str():
-                secure = setters == "pg_catalog" or setters in self.created_schemas
-            case (list() | tuple()):
-                secure = all([self.is_secure_searchpath(item) for item in setters])
-            case (ast.A_Const() | ast.String()):
-                secure = self.is_secure_searchpath(setters.val)
+                return [setters]
+            case list():
+                return setters
             case ast.VariableSetStmt():
-                secure = self.is_secure_searchpath(setters.args)
+                return [item.val.val for item in setters.args]
             case _:
-                raise Exception(
-                    "Unhandled type in is_secure_searchpath: {}".format(setters)
-                )
+                raise Exception("Unhandled type in extract_schemas: {}".format(setters))
 
-        return secure
+    # we consider the search path safe when it only contains
+    # pg_catalog and any schema created in this script and
+    # pg_temp as last entry
+    def is_secure_searchpath(self, setters):
+        schemas = self.extract_schemas(setters)
+
+        # explicit pg_catalog at start of search_path is fine
+        if schemas[0] == "pg_catalog":
+            schemas = schemas[1:]
+
+        # any schema created by us is fine too
+        while len(schemas) and schemas[0] in self.created_schemas:
+            schemas = schemas[1:]
+
+        # we require explicit pg_temp as last entry for a schema to
+        # be safe because not having explicit pg_temp in search_path
+        # will result in a search_path with pg_temp as first entry
+        if schemas == ["pg_temp"]:
+            return True
+
+        return False

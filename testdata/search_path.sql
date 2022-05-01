@@ -3,7 +3,7 @@
 SELECT unsafe_call3('%s','abc');
 SELECT pg_catalog.safe_call4();
 
-SET search_path TO pg_catalog;
+SET search_path TO pg_catalog, pg_temp;
 
 -- safe since we have safe search_path now
 SELECT safe_call9('%s','abc');

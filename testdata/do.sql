@@ -11,7 +11,7 @@ BEGIN
     PERFORM unsafe_call10();
   END;
   $i$;
-  SET search_path TO pg_catalog;
+  SET search_path TO pg_catalog,pg_temp;
   DO $i$
   BEGIN
     PERFORM safe_call17();

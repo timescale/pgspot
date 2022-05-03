@@ -68,33 +68,34 @@ def run():
     args = parser.parse_args()
 
     counter = Counter(args)
+    state = State(counter)
 
     if args.files:
-        if args.append:
-            # treat all files as single unit during processing
-            data = "\n".join([open(f).read() for f in args.files])
-            visit_sql(State(counter), data, toplevel=True)
-
-        else:
-            linebreak = "" if args.summary_only else "\n"
-            # process each file individually
-            for f in args.files:
-                if len(args.files) > 1:
-                    print("{}: ".format(f), end=linebreak)
-                data = open(f).read()
-
-                file_counter = Counter(args)
-                try:
-                    visit_sql(State(file_counter), data, toplevel=True)
-                except Exception as err:
-                    print(linebreak, file_counter, linebreak, err)
-                else:
-                    print(linebreak, file_counter, linebreak)
-
-                counter.add(file_counter)
-
+        linebreak = "" if args.summary_only else "\n"
+        # process all files
+        for f in args.files:
             if len(args.files) > 1:
-                print("TOTAL:", counter)
+                print("{}: ".format(f), end=linebreak)
+            data = open(f).read()
+
+            file_counter = Counter(args)
+            # reset state unless we are in append mode
+            if args.append:
+                file_state = state
+            else:
+                file_state = State(file_counter)
+
+            try:
+                visit_sql(file_state, data, toplevel=True)
+            except Exception as err:
+                print(linebreak, file_counter, linebreak, err)
+            else:
+                print(linebreak, file_counter, linebreak)
+
+            counter.add(file_counter)
+
+        if len(args.files) > 1:
+            print("TOTAL:", counter)
 
     elif args.explain:
         code = args.explain
@@ -113,7 +114,7 @@ def run():
         # read from stdin
         data = sys.stdin.read()
 
-        visit_sql(State(counter), data, toplevel=True)
+        visit_sql(state, data, toplevel=True)
 
         print(counter)
 

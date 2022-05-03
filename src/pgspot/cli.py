@@ -1,5 +1,6 @@
 from argparse import ArgumentParser, BooleanOptionalAction
 from textwrap import dedent
+from . import __version__
 from .codes import codes
 from .state import State, Counter
 from .visitors import visit_sql
@@ -64,8 +65,19 @@ def run():
         nargs="*",
         help="file to check for vulnerabilities",
     )
+    parser.add_argument(
+        "--version",
+        dest="show_version",
+        action="store_true",
+        default=False,
+        help="show version information",
+    )
 
     args = parser.parse_args()
+
+    if args.show_version:
+        print("pgspot {}".format(__version__))
+        exit(0)
 
     counter = Counter(args)
 

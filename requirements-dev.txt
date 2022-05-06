@@ -1,7 +1,7 @@
-attrs==21.4.0
 black==22.3.0
 click==8.1.2
-iniconfig==1.1.1
+distlib==0.3.4
+filelock==3.6.0
 mypy-extensions==0.4.3
 packaging==21.3
 pathspec==0.9.0
@@ -9,6 +9,8 @@ platformdirs==2.5.2
 pluggy==1.0.0
 py==1.11.0
 pyparsing==3.0.8
-pytest==7.1.1
-pytest-snapshot==0.8.1
+six==1.16.0
+toml==0.10.2
 tomli==2.0.1
+tox==3.25.0
+virtualenv==20.14.1

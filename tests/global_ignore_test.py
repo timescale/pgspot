@@ -1,29 +1,20 @@
-import subprocess
+from util import run
 
 
 def test_global_ignore():
-    result = subprocess.run(
-        ["echo 'CREATE TABLE IF NOT EXISTS foo();' | python pgspot"],
-        shell=True,
-        capture_output=True,
-        text=True,
-    )
-    output = result.stdout
-
-    print("output: {}".format(output))
+    sql = """
+    CREATE TABLE IF NOT EXISTS foo();
+    """
+    output = run(sql)
 
     assert "PS012" in output
     assert "PS017" in output
 
-    result = subprocess.run(
-        ["echo 'CREATE TABLE IF NOT EXISTS foo();' | python pgspot --ignore PS012"],
-        shell=True,
-        capture_output=True,
-        text=True,
-    )
-    output = result.stdout
-
-    print("output: {}".format(output))
+    sql = """
+    CREATE TABLE IF NOT EXISTS foo();
+    """
+    args = ["--ignore PS012"]
+    output = run(sql, args)
 
     assert "PS012" not in output
     assert "PS017" in output

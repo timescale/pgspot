@@ -16,6 +16,10 @@ vulnerabilities which pgspot detects, and their potential mitigations.
 ## Useful links
 - [PostgreSQL security recommendations for extensions](https://www.postgresql.org/docs/current/extend-extensions.html#EXTEND-EXTENSIONS-SECURITY)
 
+## Installation
+
+pip install git+https://github.com/timescale/pgspot.git
+
 ## Requirements
 
 - python >= 3.10
@@ -29,7 +33,7 @@ Currently it is recommended to use the forked version of pglast as it pulls in s
 ### Usage
 
 ```
-> ./pgspot -h
+> pgspot -h
 usage: pgspot [-h] [-a] [--proc-without-search-path PROC] [--summary-only] [--plpgsql | --no-plpgsql] [--explain EXPLAIN] [--ignore IGNORE] [--sql-accepting SQL_FN] [FILE ...]
 
 Spot vulnerabilities in PostgreSQL SQL scripts
@@ -52,7 +56,7 @@ options:
 ```
 
 ```
-> ./pgspot --ignore PS017 <<<"CREATE TABLE IF NOT EXISTS foo();"
+> pgspot --ignore PS017 <<<"CREATE TABLE IF NOT EXISTS foo();"
 PS012: Unsafe table creation: foo
 
 Errors: 1 Warnings: 0 Unknown: 0

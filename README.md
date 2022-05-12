@@ -18,7 +18,7 @@ vulnerabilities which pgspot detects, and their potential mitigations.
 
 ## Installation
 
-pip install git+https://github.com/timescale/pgspot.git
+pip install pgspot
 
 ## Requirements
 

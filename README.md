@@ -17,6 +17,7 @@ pgspot detects, and their potential mitigations.
 
 ## Useful links
 - [PostgreSQL security recommendations for extensions](https://www.postgresql.org/docs/current/extend-extensions.html#EXTEND-EXTENSIONS-SECURITY)
+- [PostgreSQL security recommendations for SECURITY DEFINER functions](https://www.postgresql.org/docs/current/sql-createfunction.html#SQL-CREATEFUNCTION-SECURITY)
 
 ## Installation
 

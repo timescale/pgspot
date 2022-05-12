@@ -23,12 +23,11 @@ pip install git+https://github.com/timescale/pgspot.git
 ## Requirements
 
 - python >= 3.10
-- [pglast](https://github.com/lelit/pglast) ([recommended fork](https://github.com/svenklemm/pglast))
+- [pglast >= 3.10](https://github.com/lelit/pglast)
 - [libpg_query](https://github.com/pganalyze/libpg_query) (indirectly through pglast)
 
 To install the runtime requirements, use `pip -r requirements.txt`.
 
-Currently it is recommended to use the forked version of pglast as it pulls in some libpg_query changes ([9aad9fdb](https://github.com/pganalyze/libpg_query/commit/9aad9fdbd78a9cdb09cc8eb24adc703887c9e76d) and [a53865a4](https://github.com/pganalyze/libpg_query/commit/a53865a45fe1530fcd9ba3476986559a75de4d8d)) affecting pgspot functionality that are not part of the last release.
 
 ### Usage
 

@@ -20,3 +20,7 @@ CREATE SCHEMA new;
 SELECT new.safe_call20('%s','abc');
 SELECT unsafe_call21('%s','abc');
 
+SELECT pg_catalog.set_config('search_path','pg_catalog,pg_temp',true);
+SELECT safe_call24('%s','abc');
+SELECT pg_catalog.set_config('search_path','public',true);
+SELECT unsafe_call26('%s','abc');

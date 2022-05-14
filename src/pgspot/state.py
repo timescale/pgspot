@@ -1,5 +1,6 @@
 from pglast import ast
 from .codes import codes
+from .formatters import get_text
 
 
 class Counter:
@@ -84,9 +85,9 @@ class State:
     def unknown(self, message):
         self.counter.unknown(message)
 
-    def set_searchpath(self, stmt):
+    def set_searchpath(self, stmt, local=False):
         self.searchpath_secure = self.is_secure_searchpath(stmt)
-        self.searchpath_local = stmt.is_local
+        self.searchpath_local = local
 
     def reset_searchpath(self):
         self.searchpath_secure = False
@@ -99,7 +100,7 @@ class State:
             case list():
                 return setters
             case ast.VariableSetStmt():
-                return [item.val.val for item in setters.args]
+                return [get_text(item) for item in setters.args]
             case _:
                 raise Exception("Unhandled type in extract_schemas: {}".format(setters))
 

@@ -3,7 +3,13 @@ from pglast.parser import ParseError
 from pglast.stream import RawStream
 from pglast.visitors import Visitor
 from pglast.enums.parsenodes import VariableSetKind, TransactionStmtKind, ObjectType
-from .formatters import raw_sql, format_name, format_function, format_aggregate
+from .formatters import (
+    get_text,
+    raw_sql,
+    format_name,
+    format_function,
+    format_aggregate,
+)
 from .state import State
 import re
 
@@ -205,7 +211,7 @@ class SQLVisitor(Visitor):
         # only search_path relevant
         if node.name == "search_path":
             if node.kind == VariableSetKind.VAR_SET_VALUE:
-                self.state.set_searchpath(node)
+                self.state.set_searchpath(node, node.is_local)
             if node.kind == VariableSetKind.VAR_RESET:
                 self.state.reset_searchpath()
 
@@ -300,6 +306,16 @@ class SQLVisitor(Visitor):
                         visit_sql(self.state, sql)
                     except ParseError:
                         pass
+
+        # we want to treat pg_catalog.set_config('search_path',...) similar to SET search_path
+        if (
+            format_name(node.funcname) == "pg_catalog.set_config"
+            and len(node.args) == 3
+        ):
+            if get_text(node.args[0]) == "search_path":
+                schemas = [s.strip() for s in get_text(node.args[1]).split(",")]
+                local = get_text(node.args[2]) in ["t", "true"]
+                self.state.set_searchpath(schemas, local)
 
     def visit_RangeVar(self, ancestors, node):
         # a rangevar can reference CTEs which were previously defined

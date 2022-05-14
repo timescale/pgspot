@@ -6,6 +6,18 @@ def raw_sql(node):
     return RawStream()(node)
 
 
+def get_text(node):
+    match (node):
+        case str():
+            return node
+        case ast.A_Const():
+            return get_text(node.val)
+        case ast.String():
+            return node.val
+        case _:
+            return str(node)
+
+
 def format_name(name):
     match (name):
         case str():
@@ -22,7 +34,7 @@ def format_name(name):
         case ast.TypeName():
             return ".".join([format_name(p) for p in name.names])
         case _:
-            return name
+            return str(name)
 
 
 def format_function(node):

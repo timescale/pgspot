@@ -1,6 +1,7 @@
 ## pgspot
 <p align="center">
   <a href="https://github.com/timescale/pgspot/actions"><img alt="Actions Status" src="https://github.com/timescale/pgspot/workflows/Test/badge.svg"></a>
+  <a href="https://github.com/timescale/pgspot/blob/main/LICENSE"><img alt="License: PostgreSQL" src="https://img.shields.io/github/license/timescale/pgspot"></a>  
   <a href="https://pypi.org/project/pgspot/"><img alt="PyPI" src="https://img.shields.io/pypi/v/pgspot"></a>
   <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>

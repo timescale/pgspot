@@ -327,19 +327,6 @@ class SQLVisitor(Visitor):
         ):
             self.state.warn("PS017", "{}".format(node.relname))
 
-    def visit_RangeFunction(self, ancestors, node):
-        # Postgres has the following to say about RangeFunction:
-        # > RangeFunction - function call appearing in a FROM clause
-        # >
-        # > functions is a List because we use this to represent the construct
-        # > ROWS FROM(func1(...), func2(...), ...).  Each element of this list is a
-        # > two-element sublist, the first element being the untransformed function
-        # > call tree, and the second element being a possibly-empty list of ColumnDef
-        # > nodes representing any columndef list attached to that function within the
-        # > ROWS FROM() syntax.
-        for function in node.functions:
-            self(function[0])
-
     def extract_cte_names(self, ancestor):
         # Iterate through parents, obtaining the names of CTEs which were directly defined
         cte_names = set()

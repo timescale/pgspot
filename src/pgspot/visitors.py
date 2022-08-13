@@ -48,14 +48,8 @@ def visit_plpgsql(state, node, searchpath_secure=False):
         case ast.CreateFunctionStmt():
             raw = raw_sql(node)
 
-        # Since plpgsql parser doesnt support DO we wrap it in a procedure
-        # for analysis.
         case ast.DoStmt():
-            body = [b.arg.val for b in node.args if b.defname == "as"][0]
-            # first character in dollar quoting can't be digit so we prefix with w
-            raw = "CREATE PROCEDURE plpgsql_do_wrapper() LANGUAGE PLPGSQL AS $w{wrapper}$ {body} $w{wrapper}$;".format(
-                wrapper=id(node), body=body
-            )
+            raw = raw_sql(node)
 
         case _:
             state.unknown("Unknown node in visit_plpgsql: {}".format(node))

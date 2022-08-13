@@ -32,7 +32,7 @@ or b) fully schema-qualify the operator
 
 ```
 SELECT foo OPERATOR(pg_catalog.+) bar;
-``` 
+```
 
 ## PS002: Unsafe function creation
 A function was created using `CREATE OR REPLACE` in an insecure schema.
@@ -61,6 +61,11 @@ or b) use `CREATE FUNCTION` (without `OR REPLACE`):
 ```
 CREATE FUNCTION public.foo() RETURNS INTEGER LANGUAGE SQL AS $$SELECT 1;$$;
 ```
+
+PostgreSQL versions 14.5+, 13.8+, 12.12+, 11.17+ and 10.22+ will block the
+CREATE OR REPLACE in an extension script if the statement would replace an
+object not belonging to the extension which will prevent exploitation in an
+extension context.
 
 ## PS003: SECURITY DEFINER function without explicit search_path
 A function with `SECURITY DEFINER` was created without setting a fixed search path.
@@ -188,6 +193,11 @@ To mitigate this issue, use `CREATE ...` (without `OR REPLACE`):
 CREATE TRANSFORM rxid FOR LANGUAGE plpgsql(from sql with function f1);
 ```
 
+PostgreSQL versions 14.5+, 13.8+, 12.12+, 11.17+ and 10.22+ will block the
+CREATE OR REPLACE in an extension script if the statement would replace an
+object not belonging to the extension which will prevent exploitation in an
+extension context.
+
 ## PS007: Unsafe object creation
 An object was created using `CREATE OR REPLACE` in an insecure schema.
 
@@ -217,15 +227,20 @@ or b) use `CREATE ...` (without `OR REPLACE`):
 CREATE AGGREGATE public.aggregate(SFUNC=agg_sfunc,STYPE=internal);
 ```
 
+PostgreSQL versions 14.5+, 13.8+, 12.12+, 11.17+ and 10.22+ will block the
+CREATE OR REPLACE in an extension script if the statement would replace an
+object not belonging to the extension which will prevent exploitation in an
+extension context.
+
 ## PS008: Unqualified alter sequence
-NOTE: This warning is not produced. 
+NOTE: This warning is not produced.
 
 ## PS009: Unsafe CASE expression
 A "simple" `CASE` expression was used without a secure search_path.
 
 Erroneous example:
 
-```        
+```
 SELECT
     CASE a OPERATOR(pg_catalog.=) b
         WHEN true THEN 'true'
@@ -287,6 +302,11 @@ CREATE SCHEMA my_schema;
 If the schema already exists when the extension is installed, then this
 statement will fail, which is desired behaviour.
 
+PostgreSQL versions 14.5+, 13.8+, 12.12+, 11.17+ and 10.22+ will block the
+CREATE IF NOT EXISTS in an extension script if the statement would replace an
+object not belonging to the extension which will prevent exploitation in an
+extension context.
+
 ## PS011: Unsafe sequence creation
 A sequence was created using `IF NOT EXISTS` in an insecure schema.
 
@@ -315,6 +335,11 @@ or b) use `CREATE SEQUENCE` (without `IF NOT EXISTS`):
 ```
 CREATE SEQUENCE public.s1;
 ```
+
+PostgreSQL versions 14.5+, 13.8+, 12.12+, 11.17+ and 10.22+ will block the
+CREATE IF NOT EXISTS in an extension script if the statement would replace an
+object not belonging to the extension which will prevent exploitation in an
+extension context.
 
 ## PS012: Unsafe table creation
 A table was created using `IF NOT EXISTS` in an insecure schema.
@@ -345,6 +370,11 @@ or b) use `CREATE TABLE` (without `IF NOT EXISTS`):
 CREATE TABLE public.test_table(col text);
 ```
 
+PostgreSQL versions 14.5+, 13.8+, 12.12+, 11.17+ and 10.22+ will block the
+CREATE IF NOT EXISTS in an extension script if the statement would replace an
+object not belonging to the extension which will prevent exploitation in an
+extension context.
+
 ## PS013: Unsafe foreign server creation
 A foreign server was created using `IF NOT EXISTS`.
 
@@ -365,6 +395,11 @@ To mitigate this issue, use `CREATE SERVER` (without `IF NOT EXISTS`):
 ```
 CREATE SERVER s1 FOREIGN DATA WRAPPER postgres_fdw;
 ```
+
+PostgreSQL versions 14.5+, 13.8+, 12.12+, 11.17+ and 10.22+ will block the
+CREATE IF NOT EXISTS in an extension script if the statement would replace an
+object not belonging to the extension which will prevent exploitation in an
+extension context.
 
 ## PS014: Unsafe index creation
 An index was created using `IF NOT EXISTS`.
@@ -414,6 +449,11 @@ or b) use `CREATE VIEW` (without `OR REPLACE`):
 CREATE VIEW public.test_view AS SELECT pg_catalog.now();
 ```
 
+PostgreSQL versions 14.5+, 13.8+, 12.12+, 11.17+ and 10.22+ will block the
+CREATE OR REPLACE in an extension script if the statement would replace an
+object not belonging to the extension which will prevent exploitation in an
+extension context.
+
 ## PS016: Unqualified function call
 A function was used with an unsafe search path, or not fully schema-qualified.
 
@@ -442,7 +482,7 @@ or b) fully-qualify the function
 
 ```
 SELECT extension_schema.my_function(foo);
-``` 
+```
 
 ## PS017: Unqualified object reference
 An object was referenced with an unsafe search path, or not fully schema-qualified.

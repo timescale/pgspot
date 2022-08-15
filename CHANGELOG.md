@@ -1,4 +1,9 @@
 
+## 0.3.3 (2022-08-14)
+
+- Adjust documentation to mention PG upstream changes regarding CREATE OR REPLACE and CREATE IF NOT EXISTS
+- Update pglast to >= 3.13 #74
+
 ## 0.3.2 (2022-06-20)
 
 - Add support for pg_catalog.set_config() for search_path tracking #66

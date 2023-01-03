@@ -1,4 +1,8 @@
 
+## 0.4.0 (2023-01-03)
+
+- Update pglast to 4.1 which makes pgspot use the PostgreSQL 14 parser #79
+
 ## 0.3.3 (2022-08-14)
 
 - Adjust documentation to mention PG upstream changes regarding CREATE OR REPLACE and CREATE IF NOT EXISTS

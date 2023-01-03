@@ -77,6 +77,18 @@ class PLPGSQLVisitor:
         if isinstance(node, dict):
             for key, value in node.items():
                 match (key):
+                    # work around inconsistent expression handling for assert and return statement in pglast
+                    case "PLpgSQL_stmt_assert":
+                        visit_sql(
+                            self.state,
+                            "SELECT " + value["cond"]["PLpgSQL_expr"]["query"],
+                        )
+                    case "PLpgSQL_stmt_return":
+                        if value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["expr"]["PLpgSQL_expr"]["query"],
+                            )
                     case "PLpgSQL_expr":
                         visit_sql(self.state, value["query"])
                     case _:

@@ -20,7 +20,7 @@ jobs:
       run: python -m pip install tox
 
     - name: Run tox
-      run: tox
+      run: tox -v
 
   lint:
     runs-on: ubuntu-latest

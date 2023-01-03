@@ -9,7 +9,7 @@ jobs:
     steps:
 
     - name: Setup python 3.10
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.10'
 
@@ -35,12 +35,12 @@ jobs:
     steps:
 
       - name: Setup python 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: '3.10'
 
       - name: Checkout pgspot
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Ensure docs up-to-date
         run: |

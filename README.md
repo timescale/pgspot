@@ -33,7 +33,7 @@ pip install pgspot
 ## Requirements
 
 - python >= 3.10
-- [pglast == 4.1](https://github.com/lelit/pglast)
+- [pglast == 5.0](https://github.com/lelit/pglast)
 - [libpg_query](https://github.com/pganalyze/libpg_query) (through pglast)
 
 To install the runtime requirements, use `pip -r requirements.txt`.

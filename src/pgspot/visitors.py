@@ -112,7 +112,7 @@ class SQLVisitor(Visitor):
         # no way to precreate it.
         if (
             len(node.funcname) == 2
-            and node.funcname[0].val in self.state.created_schemas
+            and node.funcname[0].sval in self.state.created_schemas
         ):
             pass
         # This function was created without OR REPLACE previously so
@@ -127,15 +127,15 @@ class SQLVisitor(Visitor):
             self.state.created_functions.append(format_function(node))
 
         # check function body
-        language = [l.arg.val for l in node.options if l.defname == "language"][0]
+        language = [l.arg.sval for l in node.options if l.defname == "language"][0]
         # check for security definer explicitly
-        security = [s.arg.val == 1 for s in node.options if s.defname == "security"]
+        security = [s.arg.boolval == 1 for s in node.options if s.defname == "security"]
         if len(security) > 0:
             security = security[0]
         else:
             security = False
 
-        body = [b.arg[0].val for b in node.options if b.defname == "as"][0]
+        body = [b.arg[0].sval for b in node.options if b.defname == "as"][0]
         setter = [
             s.arg
             for s in node.options
@@ -192,7 +192,7 @@ class SQLVisitor(Visitor):
                     if format_aggregate(node) not in self.state.created_aggregates:
                         if (
                             len(node.defnames) != 2
-                            or node.defnames[0].val not in self.state.created_schemas
+                            or node.defnames[0].sval not in self.state.created_schemas
                         ):
                             self.state.error(
                                 "PS007", "{}".format(format_aggregate(node))
@@ -207,7 +207,7 @@ class SQLVisitor(Visitor):
                 ):
                     if (
                         len(node.defnames) != 2
-                        or node.defnames[0].val not in self.state.created_schemas
+                        or node.defnames[0].sval not in self.state.created_schemas
                     ):
                         self.state.error(
                             "PS007", "{}".format(format_name(node.defnames))
@@ -283,7 +283,7 @@ class SQLVisitor(Visitor):
             self.state.error("PS015", "{}".format(format_name(node.view)))
 
     def visit_DoStmt(self, ancestors, node):
-        language = [l.arg.val for l in node.args if l.defname == "language"]
+        language = [l.arg.sval for l in node.args if l.defname == "language"]
 
         if language:
             language = language[0]
@@ -306,7 +306,7 @@ class SQLVisitor(Visitor):
             for arg in node.args:
                 # we can only evaluate constant expressions
                 if isinstance(arg, ast.A_Const):
-                    sql = arg.val.val
+                    sql = arg.val.sval
                     try:
                         # let's try and treat this as SQL. Might not work.
                         visit_sql(self.state, sql)

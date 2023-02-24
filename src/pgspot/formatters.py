@@ -13,7 +13,7 @@ def get_text(node):
         case ast.A_Const():
             return get_text(node.val)
         case ast.String():
-            return node.val
+            return node.sval
         case _:
             return str(node)
 
@@ -25,7 +25,7 @@ def format_name(name):
         case (list() | tuple()):
             return ".".join([format_name(p) for p in name])
         case ast.String():
-            return name.val
+            return name.sval
         case ast.RangeVar():
             if name.schemaname:
                 return "{}.{}".format(name.schemaname, name.relname)
@@ -55,10 +55,10 @@ def format_aggregate(node):
 
         if not basetype:
             args = ""
-        elif len(basetype) == 2 and basetype[0].val == "pg_catalog":
-            args = basetype[1].val
+        elif len(basetype) == 2 and basetype[0].sval == "pg_catalog":
+            args = basetype[1].sval
         else:
-            args = ",".join([s.val for s in basetype])
+            args = ",".join([s.sval for s in basetype])
     else:
         args = ",".join([raw_sql(arg.argType) for arg in node.args[0]])
     return "{}({})".format(format_name(node.defnames), args)

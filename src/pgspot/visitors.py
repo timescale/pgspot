@@ -34,10 +34,13 @@ def visit_sql(state, sql, searchpath_secure=False, toplevel=False):
         state.counter.sql = sql
 
     visitor = SQLVisitor(state)
+    # try:
     for stmt in parse_sql(sql):
         if toplevel:
             state.counter.stmt_location = stmt.stmt_location
         visitor(stmt)
+    # except Exception:
+    #     print("Error while parsing SQL:", sql)
 
 
 def visit_plpgsql(state, node, searchpath_secure=False):
@@ -77,20 +80,98 @@ class PLPGSQLVisitor:
         if isinstance(node, dict):
             for key, value in node.items():
                 match (key):
-                    # work around inconsistent expression handling for assert and return statement in pglast
+                    # Work around inconsistent PL/pgSQL expression handling
+                    # PLpgSQL expressions handed to us have either full SQL as query
+                    # or subexpression which will be rejected by sql parser
+                    # To work around this we prepend the latter with SELECT before
+                    # handing it to SQL parser.
+                    case "PLpgSQL_expr":
+                        visit_sql(self.state, value["query"])
+                    case "PLpgSQL_var":
+                        if "default_val" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT "
+                                + value["default_val"]["PLpgSQL_expr"]["query"],
+                            )
                     case "PLpgSQL_stmt_assert":
-                        visit_sql(
-                            self.state,
-                            "SELECT " + value["cond"]["PLpgSQL_expr"]["query"],
-                        )
-                    case "PLpgSQL_stmt_return":
-                        if value:
+                        if "cond" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["cond"]["PLpgSQL_expr"]["query"],
+                            )
+                    case "PLpgSQL_stmt_assign":
+                        if "expr" in value:
+                            expr = value["expr"]["PLpgSQL_expr"]["query"]
+                            if ":=" in expr:
+                                expr = expr.split(":=", 1)[1]
+                            else:
+                                expr = expr.split("=", 1)[1]
+                            visit_sql(self.state, "SELECT " + expr)
+                    case "PLpgSQL_stmt_case":
+                        if "t_expr" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["t_expr"]["PLpgSQL_expr"]["query"],
+                            )
+                        if "case_when_list" in value:
+                            self.visit(value["case_when_list"])
+                        if "else_stmts" in value:
+                            self.visit(value["else_stmts"])
+                    case "PLpgSQL_stmt_dynexecute":
+                        if "query" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["query"]["PLpgSQL_expr"]["query"],
+                            )
+                        if "params" in value:
+                            for item in value["params"]:
+                                visit_sql(
+                                    self.state,
+                                    "SELECT " + item["PLpgSQL_expr"]["query"],
+                                )
+                    case "PLpgSQL_case_when":
+                        if "expr" in value:
                             visit_sql(
                                 self.state,
                                 "SELECT " + value["expr"]["PLpgSQL_expr"]["query"],
                             )
-                    case "PLpgSQL_expr":
-                        visit_sql(self.state, value["query"])
+                    case "PLpgSQL_stmt_if":
+                        if "cond" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["cond"]["PLpgSQL_expr"]["query"],
+                            )
+                        if "then_body" in value:
+                            self.visit(value["then_body"])
+                        if "else_body" in value:
+                            self.visit(value["else_body"])
+                    case "PLpgSQL_stmt_fori":
+                        if "lower" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["lower"]["PLpgSQL_expr"]["query"],
+                            )
+                        if "upper" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["upper"]["PLpgSQL_expr"]["query"],
+                            )
+                        if "body" in value:
+                            self.visit(value["body"])
+                    case "PLpgSQL_stmt_raise":
+                        if "params" in value:
+                            for item in value["params"]:
+                                visit_sql(
+                                    self.state,
+                                    "SELECT " + item["PLpgSQL_expr"]["query"],
+                                )
+                    case "PLpgSQL_stmt_return":
+                        if "expr" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["expr"]["PLpgSQL_expr"]["query"],
+                            )
                     case _:
                         self.visit(value)
 

@@ -9,6 +9,7 @@ class Counter:
         self.warnings = 0
         self.unknowns = 0
         self.errors = 0
+        self.fatals = 0
 
         # for tracking current position in input stream
         # only toplevel visitor should update these
@@ -19,6 +20,7 @@ class Counter:
         self.warnings += counter.warnings
         self.unknowns += counter.unknowns
         self.errors += counter.errors
+        self.fatals += counter.fatals
 
     def print_issue(self, code, context):
         if code not in codes:
@@ -58,7 +60,7 @@ class Counter:
             print(message)
 
     def is_clean(self):
-        return self.errors + self.warnings + self.unknowns == 0
+        return self.errors + self.warnings + self.unknowns + self.fatals == 0
 
     def __str__(self):
         return "Errors: {} Warnings: {} Unknown: {}".format(

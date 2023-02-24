@@ -85,8 +85,13 @@ def run():
             else:
                 file_state = State(file_counter)
 
-            visit_sql(file_state, data, toplevel=True)
-            print(linebreak, file_counter, linebreak)
+            try:
+                visit_sql(file_state, data, toplevel=True)
+            except Exception as err:
+                print(linebreak, file_counter, linebreak, err)
+                file_counter.fatals += 1
+            else:
+                print(linebreak, file_counter, linebreak)
 
             counter.add(file_counter)
 

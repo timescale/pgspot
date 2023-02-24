@@ -1,4 +1,8 @@
 
+## 0.5.0 (2023-02-24)
+
+- Update pglast to 5.0 which makes pgspot use the PostgreSQL 15 parser #84
+
 ## 0.4.0 (2023-01-03)
 
 - Update pglast to 4.1 which makes pgspot use the PostgreSQL 14 parser #79

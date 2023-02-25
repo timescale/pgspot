@@ -5,10 +5,17 @@ from .state import State, Counter
 from .visitors import visit_sql
 import sys
 
+from pgspot import __version__
+
 
 def run():
     parser = ArgumentParser(
         description="Spot vulnerabilities in PostgreSQL SQL scripts"
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="%(prog)s {version}".format(version=__version__),
     )
     parser.add_argument(
         "-a",

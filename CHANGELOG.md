@@ -1,4 +1,9 @@
 
+## 0.6.0 (2023-08-23)
+
+- Ignore default values when comparing functions signatures #88
+- Add --version flag #86
+
 ## 0.5.0 (2023-02-24)
 
 - Update pglast to 5.0 which makes pgspot use the PostgreSQL 15 parser #84

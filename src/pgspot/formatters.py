@@ -1,5 +1,6 @@
 from pglast.stream import RawStream, OutputStream
 from pglast import ast
+from copy import copy
 
 
 def raw_sql(node):
@@ -38,13 +39,15 @@ def format_name(name):
 
 
 def format_function(node):
+    args = []
     if node.parameters:
-        args = ",".join(
-            [p.strip().strip("'") for p in raw_sql(node.parameters).split(";")]
-        )
-    else:
-        args = ""
-    return "{}({})".format(format_name(node.funcname), args)
+        for p in node.parameters:
+            arg_copy = copy(p)
+            # strip out default expressions
+            arg_copy.defexpr = None
+            args.append(raw_sql(arg_copy))
+
+    return "{}({})".format(format_name(node.funcname), ",".join(args))
 
 
 def format_aggregate(node):

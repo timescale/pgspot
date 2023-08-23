@@ -17,3 +17,12 @@ CREATE FUNCTION safe16() RETURNS TEXT LANGUAGE plpgsql AS $$
 BEGIN
   RETURN unsafe_call18('%I','foo');
 END; $$;
+
+-- safe creation
+CREATE FUNCTION f22(a int = 1) RETURNS TEXT LANGUAGE SQL AS $$ SELECT 'foo'; $$ SET search_path TO pg_catalog,pg_temp;
+
+-- safe as well since it was previously created with same signature but different default
+CREATE OR REPLACE FUNCTION f22(a int = 2) RETURNS TEXT LANGUAGE SQL AS $$ SELECT 'foo'; $$ SET search_path TO pg_catalog,pg_temp;
+
+-- not safe since it's new signature
+CREATE OR REPLACE FUNCTION f22(b int) RETURNS TEXT LANGUAGE SQL AS $$ SELECT 'foo'; $$ SET search_path TO pg_catalog,pg_temp;

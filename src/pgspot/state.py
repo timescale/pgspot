@@ -28,11 +28,7 @@ class Counter:
         if not self.args.summary_only:
             line = self.line_number()
             title = codes[code]["title"]
-            print(
-                "{code}: {title}: {context} at line {line}".format(
-                    code=code, title=title, context=context, line=line
-                )
-            )
+            print(f"{code}: {title}: {context} at line {line}")
 
     def warn(self, code, context):
         if code not in self.args.ignore:
@@ -63,8 +59,8 @@ class Counter:
         return self.errors + self.warnings + self.unknowns + self.fatals == 0
 
     def __str__(self):
-        return "Errors: {} Warnings: {} Unknown: {}".format(
-            self.errors, self.warnings, self.unknowns
+        return (
+            f"Errors: {self.errors} Warnings: {self.warnings} Unknown: {self.unknowns}"
         )
 
 
@@ -104,7 +100,7 @@ class State:
             case ast.VariableSetStmt():
                 return [get_text(item) for item in setters.args]
             case _:
-                raise Exception("Unhandled type in extract_schemas: {}".format(setters))
+                raise Exception(f"Unhandled type in extract_schemas: {setters}")
 
     # we consider the search path safe when it only contains
     # pg_catalog and any schema created in this script and

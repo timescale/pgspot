@@ -13,9 +13,7 @@ def run():
         description="Spot vulnerabilities in PostgreSQL SQL scripts"
     )
     parser.add_argument(
-        "--version",
-        action="version",
-        version="%(prog)s {version}".format(version=__version__),
+        "--version", action="version", version=f"%(prog)s {__version__}"
     )
     parser.add_argument(
         "-a",
@@ -82,7 +80,7 @@ def run():
         # process all files
         for f in args.files:
             if len(args.files) > 1:
-                print("{}: ".format(f), end=linebreak)
+                print(f"{f}: ", end=linebreak)
             data = open(f).read()
 
             file_counter = Counter(args)
@@ -108,13 +106,11 @@ def run():
     elif args.explain:
         code = args.explain
         if code in codes:
-            print(
-                "{}: {}\n{}".format(
-                    code, codes[code]["title"], dedent(codes[code]["description"])
-                )
-            )
+            title = codes[code]["title"]
+            desc = dedent(codes[code]["description"])
+            print(f"{code}: {title}\n{desc}")
         else:
-            print("Unknown error or warning: {}".format(code))
+            print(f"Unknown error or warning: {code}")
             sys.exit(1)
         sys.exit(0)
 

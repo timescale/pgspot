@@ -55,7 +55,7 @@ def visit_plpgsql(state, node, searchpath_secure=False):
             raw = raw_sql(node)
 
         case _:
-            state.unknown("Unknown node in visit_plpgsql: {}".format(node))
+            state.unknown(f"Unknown node in visit_plpgsql: {node}")
             return
 
     parsed = parse_plpgsql(raw)
@@ -184,7 +184,7 @@ class SQLVisitor(Visitor):
     def visit_A_Expr(self, ancestors, node):
         if len(node.name) != 2 and not self.state.searchpath_secure:
             self.state.warn(
-                "PS001", "'{}' in {}".format(format_name(node.name), RawStream()(node))
+                "PS001", f"'{format_name(node.name)}' in {RawStream()(node)}"
             )
 
     def visit_CreateFunctionStmt(self, ancestors, node):
@@ -201,7 +201,7 @@ class SQLVisitor(Visitor):
         elif format_function(node) in self.state.created_functions:
             pass
         elif node.replace:
-            self.state.error("PS002", "{}".format(format_function(node)))
+            self.state.error("PS002", format_function(node))
 
         # keep track of functions created in this script in case they get replaced later
         if node.replace == False:
@@ -231,9 +231,9 @@ class SQLVisitor(Visitor):
         # functions without explicit search_path will generate a warning unless they are SECURITY DEFINER
         if security and language != "c":
             if not setter:
-                self.state.error("PS003", "{}".format(format_function(node)))
+                self.state.error("PS003", format_function(node))
             elif not body_secure:
-                self.state.error("PS004", "{}".format(format_function(node)))
+                self.state.error("PS004", format_function(node))
         else:
             if language in ["sql", "plpgsql"]:
                 if (
@@ -241,7 +241,7 @@ class SQLVisitor(Visitor):
                     and format_function(node)
                     not in self.state.args.proc_without_search_path
                 ):
-                    self.state.warn("PS005", "{}".format(format_function(node)))
+                    self.state.warn("PS005", format_function(node))
 
         match (language):
             case "sql":
@@ -256,15 +256,15 @@ class SQLVisitor(Visitor):
             case ("c" | "internal"):
                 pass
             case _:
-                self.state.unknown("Unknown function language: {}".format(language))
+                self.state.unknown(f"Unknown function language: {language}")
 
     def visit_CreateTransformStmt(self, ancestors, node):
         if node.replace:
-            self.state.warn("PS006", "{}".format(format_name(node.type_name)))
+            self.state.warn("PS006", format_name(node.type_name))
 
     def visit_DefineStmt(self, ancestors, node):
         if len(node.defnames) == 1 and not self.state.searchpath_secure:
-            self.state.warn("PS017", "{}".format(format_name(node.defnames)))
+            self.state.warn("PS017", format_name(node.defnames))
 
         match node.kind:
             # CREATE AGGREGATE
@@ -275,9 +275,7 @@ class SQLVisitor(Visitor):
                             len(node.defnames) != 2
                             or node.defnames[0].sval not in self.state.created_schemas
                         ):
-                            self.state.error(
-                                "PS007", "{}".format(format_aggregate(node))
-                            )
+                            self.state.error("PS007", format_aggregate(node))
 
                 if not node.replace:
                     self.state.created_aggregates.append(format_aggregate(node))
@@ -290,9 +288,7 @@ class SQLVisitor(Visitor):
                         len(node.defnames) != 2
                         or node.defnames[0].sval not in self.state.created_schemas
                     ):
-                        self.state.error(
-                            "PS007", "{}".format(format_name(node.defnames))
-                        )
+                        self.state.error("PS007", format_name(node.defnames))
 
     def visit_VariableSetStmt(self, ancestors, node):
         # only search_path relevant
@@ -304,11 +300,11 @@ class SQLVisitor(Visitor):
 
     def visit_CaseExpr(self, ancestors, node):
         if node.arg and not self.state.searchpath_secure:
-            self.state.error("PS009", "{}".format(raw_sql(node)))
+            self.state.error("PS009", raw_sql(node))
 
     def visit_CreateSchemaStmt(self, ancestors, node):
         if node.if_not_exists and node.schemaname not in self.state.created_schemas:
-            self.state.error("PS010", "{}".format(node.schemaname))
+            self.state.error("PS010", node.schemaname)
         self.state.created_schemas.append(node.schemaname)
 
     def visit_CreateSeqStmt(self, ancestors, node):
@@ -316,7 +312,7 @@ class SQLVisitor(Visitor):
             node.if_not_exists
             and node.sequence.schemaname not in self.state.created_schemas
         ):
-            self.state.error("PS011", "{}".format(raw_sql(node.sequence)))
+            self.state.error("PS011", raw_sql(node.sequence))
 
     def visit_CreateStmt(self, ancestors, node):
         # We consider table creation safe even with IF NOT EXISTS if it happens in a
@@ -327,31 +323,30 @@ class SQLVisitor(Visitor):
         ):
             pass
         elif node.if_not_exists:
-            self.state.error("PS012", "{}".format(format_name(node.relation)))
+            self.state.error("PS012", format_name(node.relation))
 
     def visit_CreateTableAsStmt(self, ancestors, node):
         if (
             node.if_not_exists
             and node.into.rel.schemaname not in self.state.created_schemas
         ):
-            self.state.error("PS007", "{}".format(format_name(node.into.rel)))
+            self.state.error("PS007", format_name(node.into.rel))
 
     def visit_CreateForeignServerStmt(self, ancestors, node):
         if node.if_not_exists:
-            self.state.error("PS013", "{}".format(node.servername))
+            self.state.error("PS013", node.servername)
 
     def visit_IndexStmt(self, ancestors, node):
         if (
             node.if_not_exists
             and node.relation.schemaname not in self.state.created_schemas
         ):
-            self.state.error("PS014", "{}".format(format_name(node.idxname)))
+            self.state.error("PS014", format_name(node.idxname))
 
     def visit_TypeCast(self, ancestors, node):
         if len(node.typeName.names) == 1 and not self.state.searchpath_secure:
             self.state.error(
-                "PS017",
-                "{} in {}".format(format_name(node.typeName.names), RawStream()(node)),
+                "PS017", f"{format_name(node.typeName.names)} in {RawStream()(node)}"
             )
 
     def visit_ViewStmt(self, ancestors, node):
@@ -361,7 +356,7 @@ class SQLVisitor(Visitor):
         ):
             pass
         elif node.replace:
-            self.state.error("PS015", "{}".format(format_name(node.view)))
+            self.state.error("PS015", format_name(node.view))
 
     def visit_DoStmt(self, ancestors, node):
         language = [l.arg.sval for l in node.args if l.defname == "language"]
@@ -375,11 +370,11 @@ class SQLVisitor(Visitor):
             case "plpgsql":
                 visit_plpgsql(self.state, node, self.state.searchpath_secure)
             case _:
-                self.state.unknown("Unknown language: {}".format(language))
+                self.state.unknown(f"Unknown language: {language}")
 
     def visit_FuncCall(self, ancestors, node):
         if len(node.funcname) != 2 and not self.state.searchpath_secure:
-            self.state.warn("PS016", "{}".format(format_name(node.funcname)))
+            self.state.warn("PS016", format_name(node.funcname))
         # Possibly evaluate argument to "sql-accepting" function
         function_name = format_name(node.funcname[-1])
         function_args = self.state.counter.args.sql_fn
@@ -412,7 +407,7 @@ class SQLVisitor(Visitor):
             and node.relname not in cte_names
             and not self.state.searchpath_secure
         ):
-            self.state.warn("PS017", "{}".format(node.relname))
+            self.state.warn("PS017", node.relname)
 
     def extract_cte_names(self, ancestor):
         # Iterate through parents, obtaining the names of CTEs which were directly defined

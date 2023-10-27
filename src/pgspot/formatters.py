@@ -29,7 +29,7 @@ def format_name(name):
             return name.sval
         case ast.RangeVar():
             if name.schemaname:
-                return "{}.{}".format(name.schemaname, name.relname)
+                return f"{name.schemaname}.{name.relname}"
             else:
                 return name.relname
         case ast.TypeName():
@@ -47,7 +47,7 @@ def format_function(node):
             arg_copy.defexpr = None
             args.append(raw_sql(arg_copy))
 
-    return "{}({})".format(format_name(node.funcname), ",".join(args))
+    return f"{format_name(node.funcname)}({','.join(args)})"
 
 
 def format_aggregate(node):
@@ -64,4 +64,4 @@ def format_aggregate(node):
             args = ",".join([s.sval for s in basetype])
     else:
         args = ",".join([raw_sql(arg.argType) for arg in node.args[0]])
-    return "{}({})".format(format_name(node.defnames), args)
+    return f"{format_name(node.defnames)}({args})"

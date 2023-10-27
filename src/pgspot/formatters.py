@@ -1,6 +1,6 @@
-from pglast.stream import RawStream, OutputStream
-from pglast import ast
 from copy import copy
+from pglast.stream import RawStream
+from pglast import ast
 
 
 def raw_sql(node):
@@ -30,8 +30,7 @@ def format_name(name):
         case ast.RangeVar():
             if name.schemaname:
                 return f"{name.schemaname}.{name.relname}"
-            else:
-                return name.relname
+            return name.relname
         case ast.TypeName():
             return ".".join([format_name(p) for p in name.names])
         case _:

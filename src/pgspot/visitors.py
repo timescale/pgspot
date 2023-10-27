@@ -1,3 +1,5 @@
+import re
+
 from pglast import ast, parse_sql, parse_plpgsql
 from pglast.parser import ParseError
 from pglast.stream import RawStream
@@ -11,10 +13,9 @@ from .formatters import (
     format_aggregate,
 )
 from .state import State
-import re
 
 
-def visit_sql(state, sql, searchpath_secure=False, toplevel=False):
+def visit_sql(state, sql, toplevel=False):
     # We have to iterate over toplevel items ourselves cause the visitor does
     # breadth-first iteration, which would conflict with our search_path state
     # tracking.
@@ -43,7 +44,7 @@ def visit_sql(state, sql, searchpath_secure=False, toplevel=False):
     #     print("Error while parsing SQL:", sql)
 
 
-def visit_plpgsql(state, node, searchpath_secure=False):
+def visit_plpgsql(state, node):
     if not state.args.plpgsql:
         return
 
@@ -67,7 +68,7 @@ def visit_plpgsql(state, node, searchpath_secure=False):
 
 class PLPGSQLVisitor:
     def __init__(self, state):
-        super(self.__class__, self).__init__()
+        super().__init__()
         self.state = state
 
     def __call__(self, node):
@@ -176,10 +177,11 @@ class PLPGSQLVisitor:
                         self.visit(value)
 
 
+# pylint: disable=unused-argument,invalid-name
 class SQLVisitor(Visitor):
     def __init__(self, state):
         self.state = state
-        super(self.__class__, self).__init__()
+        super().__init__()
 
     def visit_A_Expr(self, ancestors, node):
         if len(node.name) != 2 and not self.state.searchpath_secure:
@@ -204,7 +206,7 @@ class SQLVisitor(Visitor):
             self.state.error("PS002", format_function(node))
 
         # keep track of functions created in this script in case they get replaced later
-        if node.replace == False:
+        if not node.replace:
             self.state.created_functions.append(format_function(node))
 
         # check function body
@@ -228,7 +230,8 @@ class SQLVisitor(Visitor):
         else:
             body_secure = False
 
-        # functions without explicit search_path will generate a warning unless they are SECURITY DEFINER
+        # functions without explicit search_path will generate a warning
+        # unless they are SECURITY DEFINER
         if security and language != "c":
             if not setter:
                 self.state.error("PS003", format_function(node))
@@ -368,7 +371,7 @@ class SQLVisitor(Visitor):
 
         match (language):
             case "plpgsql":
-                visit_plpgsql(self.state, node, self.state.searchpath_secure)
+                visit_plpgsql(self.state, node)
             case _:
                 self.state.unknown(f"Unknown language: {language}")
 

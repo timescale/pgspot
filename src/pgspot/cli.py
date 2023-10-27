@@ -1,11 +1,10 @@
 from argparse import ArgumentParser, BooleanOptionalAction
 from textwrap import dedent
+import sys
+from pgspot import __version__
 from .codes import codes
 from .state import State, Counter
 from .visitors import visit_sql
-import sys
-
-from pgspot import __version__
 
 
 def run():
@@ -28,7 +27,7 @@ def run():
         metavar="PROC",
         dest="proc_without_search_path",
         action="append",
-        default=list(),
+        default=[],
         help="whitelist functions without explicit search_path",
     )
     parser.add_argument(
@@ -51,7 +50,7 @@ def run():
         "--ignore",
         dest="ignore",
         action="append",
-        default=list(),
+        default=[],
         type=str,
         help="Ignore error or warning code",
     )
@@ -59,7 +58,7 @@ def run():
         "--sql-accepting",
         dest="sql_fn",
         action="append",
-        default=list(),
+        default=[],
         help="Specify one or more sql-accepting functions",
     )
     parser.add_argument(
@@ -78,27 +77,29 @@ def run():
     if args.files:
         linebreak = "" if args.summary_only else "\n"
         # process all files
-        for f in args.files:
+        for filename in args.files:
             if len(args.files) > 1:
-                print(f"{f}: ", end=linebreak)
-            data = open(f).read()
+                print(f"{filename}: ", end=linebreak)
 
-            file_counter = Counter(args)
-            # reset state unless we are in append mode
-            if args.append:
-                file_state = state
-            else:
-                file_state = State(file_counter)
+            with open(filename, encoding="utf8") as file:
+                data = file.read()
 
-            try:
-                visit_sql(file_state, data, toplevel=True)
-            except Exception as err:
-                print(linebreak, file_counter, linebreak, err)
-                file_counter.fatals += 1
-            else:
-                print(linebreak, file_counter, linebreak)
+                file_counter = Counter(args)
+                # reset state unless we are in append mode
+                if args.append:
+                    file_state = state
+                else:
+                    file_state = State(file_counter)
 
-            counter.add(file_counter)
+                try:
+                    visit_sql(file_state, data, toplevel=True)
+                except Exception as err:
+                    print(linebreak, file_counter, linebreak, err)
+                    file_counter.fatals += 1
+                else:
+                    print(linebreak, file_counter, linebreak)
+
+                counter.add(file_counter)
 
         if len(args.files) > 1:
             print("TOTAL:", counter)

@@ -68,9 +68,9 @@ class State:
     def __init__(self, counter):
         self.counter = counter
         self.args = counter.args
-        self.created_schemas = list()
-        self.created_aggregates = list()
-        self.created_functions = list()
+        self.created_schemas = []
+        self.created_aggregates = []
+        self.created_functions = []
         self.searchpath_secure = False
         self.searchpath_local = False
 
@@ -113,7 +113,7 @@ class State:
             schemas = schemas[1:]
 
         # any schema created by us is fine too
-        while len(schemas) and schemas[0] in self.created_schemas:
+        while schemas and schemas[0] in self.created_schemas:
             schemas = schemas[1:]
 
         # we require explicit pg_temp as last entry for a schema to

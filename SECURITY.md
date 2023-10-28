@@ -1,6 +1,6 @@
 # Security Policy
 
-Publicly disclosing security bugs in a public forum can put everyone at risk, however. Therefore, we ask that people follow the below instructions to report security vulnerability.
+Publicly disclosing security bugs in a public forum can put everyone at risk. Therefore, we ask that people follow the below instructions to report security vulnerability.
 
 ## Supported Versions
 

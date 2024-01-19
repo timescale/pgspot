@@ -1,5 +1,5 @@
 black==23.12.1
-click==8.1.2
+click==8.1.7
 distlib==0.3.8
 filelock==3.13.1
 mypy-extensions==1.0.0

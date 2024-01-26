@@ -23,7 +23,7 @@ def format_name(name):
     match (name):
         case str():
             return name
-        case (list() | tuple()):
+        case list() | tuple():
             return ".".join([format_name(p) for p in name])
         case ast.String():
             return name.sval

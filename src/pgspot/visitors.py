@@ -256,7 +256,7 @@ class SQLVisitor(Visitor):
                 state = State(self.state.counter)
                 state.searchpath_secure = body_secure
                 visit_plpgsql(state, node)
-            case ("c" | "internal"):
+            case "c" | "internal":
                 pass
             case _:
                 self.state.unknown(f"Unknown function language: {language}")

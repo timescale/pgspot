@@ -5,7 +5,7 @@ filelock==3.13.1
 mypy-extensions==1.0.0
 packaging==23.2
 pathspec==0.12.1
-platformdirs==4.1.0
+platformdirs==4.2.0
 pluggy==1.4.0
 pylint==3.0.3
 pyparsing==3.1.1

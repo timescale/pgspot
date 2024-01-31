@@ -1,4 +1,8 @@
 
+## 0.7.0 (2024-01-31)
+
+- Update pglast to 6.1 which makes pgspot use the PostgreSQL 16 parser
+
 ## 0.6.0 (2023-08-23)
 
 - Ignore default values when comparing functions signatures #88

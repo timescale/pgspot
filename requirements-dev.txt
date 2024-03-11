@@ -3,7 +3,7 @@ click==8.1.7
 distlib==0.3.8
 filelock==3.13.1
 mypy-extensions==1.0.0
-packaging==23.2
+packaging==24.0
 pathspec==0.12.1
 platformdirs==4.2.0
 pluggy==1.4.0

@@ -160,6 +160,14 @@ class PLPGSQLVisitor:
                             )
                         if "body" in value:
                             self.visit(value["body"])
+                    case "PLpgSQL_stmt_foreach_a":
+                        if "expr" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["expr"]["PLpgSQL_expr"]["query"],
+                            )
+                        if "body" in value:
+                            self.visit(value["body"])
                     case "PLpgSQL_stmt_raise":
                         if "params" in value:
                             for item in value["params"]:

@@ -1,4 +1,8 @@
 
+## 0.7.1 (2024-04-12)
+
+- Fix handling of FOREACH IN ARRAY
+
 ## 0.7.0 (2024-01-31)
 
 - Update pglast to 6.1 which makes pgspot use the PostgreSQL 16 parser

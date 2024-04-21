@@ -240,7 +240,7 @@ class SQLVisitor(Visitor):
 
         # functions without explicit search_path will generate a warning
         # unless they are SECURITY DEFINER
-        if security and language != "c":
+        if security:
             if not setter:
                 self.state.error("PS003", format_function(node))
             elif not body_secure:

@@ -8,5 +8,5 @@ CREATE FUNCTION unsafe_sec_definer6() RETURNS TEXT LANGUAGE PLPGSQL SECURITY DEF
 CREATE FUNCTION safe_sec_definer8() RETURNS TEXT LANGUAGE PLPGSQL SECURITY INVOKER AS $$ BEGIN RETURN pg_catalog.now(); END; $$;
 -- unsafe plpgsql sec definer procedure with no search_path
 CREATE PROCEDURE unsafe_sec_definer10() LANGUAGE PLPGSQL SECURITY DEFINER AS $$ BEGIN PERFORM pg_catalog.now(); END; $$;
--- we dont warn about search_path of security definer function in C
+-- security definer function in C without search_path
 CREATE FUNCTION c_sec_definer12() RETURNS TEXT LANGUAGE C SECURITY DEFINER AS 'c_sec_definer12';

@@ -6,7 +6,7 @@ mypy-extensions==1.0.0
 packaging==24.0
 pathspec==0.12.1
 platformdirs==4.2.0
-pluggy==1.4.0
+pluggy==1.5.0
 pylint==3.1.0
 pyparsing==3.1.2
 six==1.16.0

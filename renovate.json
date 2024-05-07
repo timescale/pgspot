@@ -5,8 +5,9 @@
   ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["patch", "minor", "bump"],
-      "groupName": "maintenance (non-major)"
+      "matchUpdateTypes": ["patch", "minor", "pin"],
+      "groupName": "maintenance (non-major)",
+      "schedule": "first day of the month"
     }
   ]
 }

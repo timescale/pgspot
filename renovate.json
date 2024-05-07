@@ -7,7 +7,7 @@
     {
       "matchUpdateTypes": ["patch", "minor", "pin"],
       "groupName": "maintenance (non-major)",
-      "schedule": "first day of the month"
+      "schedule": ["first day of the month"]
     }
   ]
 }

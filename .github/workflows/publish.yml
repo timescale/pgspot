@@ -13,7 +13,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Set up Python 3.10
         uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
@@ -27,4 +27,4 @@ jobs:
         run: python -m build --sdist --wheel --outdir dist/ .
 
       - name: Publish distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@87b624f8716b1150d93f45fa364e49eceebf3ffd # release/v1
+        uses: pypa/gh-action-pypi-publish@fb9fc6a4e67ca27a7a76b17bbf90be83c2d3c716 # release/v1

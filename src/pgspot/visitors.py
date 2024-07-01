@@ -23,6 +23,7 @@ def visit_sql(state, sql, toplevel=False):
     # @extschema@ is placeholder in extension scripts for
     # the schema the extension gets installed in
     sql = sql.replace("@extschema@", "extschema")
+    sql = re.sub(r"@extschema:([^@]+)@", r"extschema_\1", sql, flags=re.MULTILINE)
     sql = sql.replace("@extowner@", "extowner")
     sql = sql.replace("@database_owner@", "database_owner")
     # postgres contrib modules are protected by psql meta commands to

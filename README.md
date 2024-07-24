@@ -61,6 +61,7 @@ options:
                         Analyze PLpgSQL code (default: True)
   --explain EXPLAIN     Describe an error/warning code
   --ignore IGNORE       Ignore error or warning code
+  --ignore-lang LANG    Ignore unknown procedural language
   --sql-accepting SQL_FN
                         Specify one or more sql-accepting functions
 ```

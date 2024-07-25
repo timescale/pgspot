@@ -55,6 +55,14 @@ def run():
         help="Ignore error or warning code",
     )
     parser.add_argument(
+        "--ignore-lang",
+        dest="ignore_lang",
+        action="append",
+        default=[],
+        type=str,
+        help="Ignore one or more unknown procedural languages",
+    )
+    parser.add_argument(
         "--sql-accepting",
         dest="sql_fn",
         action="append",
@@ -70,6 +78,7 @@ def run():
     )
 
     args = parser.parse_args()
+    args.ignore_lang = [lang.lower() for lang in args.ignore_lang]
 
     counter = Counter(args)
     state = State(counter)

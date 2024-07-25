@@ -267,6 +267,8 @@ class SQLVisitor(Visitor):
                 visit_plpgsql(state, node)
             case "c" | "internal":
                 pass
+            case language if language in self.state.args.ignore_lang:
+                pass
             case _:
                 self.state.unknown(f"Unknown function language: {language}")
 

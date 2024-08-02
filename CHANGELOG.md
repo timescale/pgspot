@@ -1,4 +1,10 @@
 
+## 0.8.0 (2024-08-02)
+
+- Add flag to ignore specific procedural languages (#185)
+- Support @extschema:name@ placeholders introduced with PG16
+- Warn about C security definer functions without search_path
+
 ## 0.7.1 (2024-04-12)
 
 - Fix handling of FOREACH IN ARRAY

@@ -12,5 +12,5 @@ PS005: Function without explicit search_path: safe16() at line 15
 PS016: Unqualified function call: unsafe_call18 at line 15
 PS002: Unsafe function creation: f22(b integer) at line 26
 
- Errors: 3 Warnings: 10 Unknown: 0 
+ Errors: 0 Warnings: 13 Unknown: 0 
 

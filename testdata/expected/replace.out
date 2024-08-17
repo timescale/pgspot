@@ -8,5 +8,5 @@ PS006: Unsafe transform creation: type6 at line 6
 PS015: Unsafe view creation: view9 at line 7
 PS017: Unqualified object reference: view9 at line 7
 
- Errors: 4 Warnings: 5 Unknown: 0 
+ Errors: 2 Warnings: 7 Unknown: 0 
 

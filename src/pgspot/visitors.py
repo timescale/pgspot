@@ -212,7 +212,7 @@ class SQLVisitor(Visitor):
         elif format_function(node) in self.state.created_functions:
             pass
         elif node.replace:
-            self.state.error("PS002", format_function(node))
+            self.state.warn("PS002", format_function(node))
 
         # keep track of functions created in this script in case they get replaced later
         if not node.replace:

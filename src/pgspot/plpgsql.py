@@ -4,14 +4,13 @@
 #
 # Disable pylint warnings about class names cause we are trying to match the
 # AST names used by PLpgSQL parser.
-# pylint: disable-msg=C0103
-# pylint: disable-msg=R0903
+# pylint: disable-msg=invalid-name,too-few-public-methods
 
 
 class PLpgSQLNode:
     def __init__(self, raw):
         self.type = list(raw.keys())[0]
-        self.lineno = None
+        self.lineno = ""
         for k, v in raw[self.type].items():
             setattr(self, k, build_node(v))
 
@@ -22,6 +21,24 @@ class PLpgSQLNode:
         fields = self.__dict__.copy()
         fields.pop("type")
         return f"{self.type}({fields})"
+
+
+class PLpgSQL_stmt_if(PLpgSQLNode):
+    def __init__(self, raw):
+        self.then_body = None
+        self.elsif_list = None
+        self.else_body = None
+        super().__init__(raw)
+
+
+class PLpgSQL_row(PLpgSQLNode):
+    def __init__(self, raw):
+        # PLpgSQL_row has a fields attribute which is a list of dicts that
+        # don't have the same structure as other node dicts. So we pop it out
+        # and set it as an attribute directly instead of having it handled by
+        # recursion.
+        self.fields = raw["PLpgSQL_row"].pop("fields")
+        super().__init__(raw)
 
 
 class PLpgSQL_var(PLpgSQLNode):

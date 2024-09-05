@@ -13,7 +13,7 @@ jobs:
     steps:
 
     - name: Setup python 3.10
-      uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5.1.1
+      uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
       with:
         python-version: '3.10'
 
@@ -58,7 +58,7 @@ jobs:
 
     - name: Notify slack on failure
       if: failure()
-      uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
+      uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
       with:
         channel-id: 'CEKV5LMK3'
         slack-message: 'Nightly pgspot run for timescaledb repository failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Details>'

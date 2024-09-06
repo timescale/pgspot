@@ -37,7 +37,7 @@ pip install pgspot
 - [pglast](https://github.com/lelit/pglast)
 - [libpg_query](https://github.com/pganalyze/libpg_query) (through pglast)
 
-To install the runtime requirements, use `pip -r requirements.txt`.
+To install the runtime requirements, use `pip install -r requirements.txt`.
 
 
 ### Usage

@@ -182,6 +182,14 @@ class PLPGSQLVisitor:
                                 self.state,
                                 "SELECT " + value["expr"]["PLpgSQL_expr"]["query"],
                             )
+                    case "PLpgSQL_stmt_while":
+                        if "cond" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["cond"]["PLpgSQL_expr"]["query"],
+                            )
+                        if "body" in value:
+                            self.visit(value["body"])
                     case _:
                         self.visit(value)
 

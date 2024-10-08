@@ -1,0 +1,7 @@
+PS002: Unsafe function creation: l() at line 1
+PS005: Function without explicit search_path: l() at line 1
+PS016: Unqualified function call: f1 at line 1
+PS016: Unqualified function call: f2 at line 1
+
+ Errors: 0 Warnings: 4 Unknown: 0 
+

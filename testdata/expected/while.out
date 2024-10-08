@@ -1,0 +1,10 @@
+PS002: Unsafe function creation: w1() at line 1
+PS005: Function without explicit search_path: w1() at line 1
+PS017: Unqualified object reference: bool in CAST(format1('%s', 'false') AS bool) at line 1
+PS016: Unqualified function call: format1 at line 1
+PS001: Unqualified operator: '<' in 0 < _count at line 1
+PS001: Unqualified operator: '-' in _count - 1 at line 1
+PS016: Unqualified function call: format2 at line 1
+
+ Errors: 1 Warnings: 6 Unknown: 0 
+

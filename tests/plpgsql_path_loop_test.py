@@ -107,22 +107,22 @@ def test_dynfors_loop():
     assert str(pathes[0]) == "PLpgSQL_stmt_raise(6) -> PLpgSQL_stmt_return()"
 
 
-# def test_forc_loop():
-#    sql = """
-#    CREATE FUNCTION foo(cmd TEXT) RETURNS void AS $$
-#    DECLARE
-#      i INT;
-#      c CURSOR FOR SELECT generate_series(1,10);
-#    BEGIN
-#      FOR i IN c LOOP
-#        RAISE NOTICE 'i is %',i;
-#      END LOOP;
-#    END
-#    $$ LANGUAGE plpgsql;
-#    """
-#    parsed = parse_plpgsql(sql)
-#    node = build_node(parsed[0])
-#    pathes = list(paths(node))
-#    assert len(pathes) == 1
-#
-#    assert str(pathes[0]) == "PLpgSQL_stmt_raise(6) -> PLpgSQL_stmt_return()"
+def test_forc_loop():
+    sql = """
+   CREATE FUNCTION foo(cmd TEXT) RETURNS void AS $$
+   DECLARE
+     i INT;
+     c CURSOR FOR SELECT generate_series(1,10);
+   BEGIN
+     FOR i IN c LOOP
+       RAISE NOTICE 'i is %',i;
+     END LOOP;
+   END
+   $$ LANGUAGE plpgsql;
+   """
+    parsed = parse_plpgsql(sql)
+    node = build_node(parsed[0])
+    pathes = list(paths(node))
+    assert len(pathes) == 1
+
+    assert str(pathes[0]) == "PLpgSQL_stmt_raise(7) -> PLpgSQL_stmt_return()"

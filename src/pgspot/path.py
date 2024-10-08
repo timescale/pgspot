@@ -84,25 +84,18 @@ def dfs(node, path, pathes):
                 | "PLpgSQL_stmt_open"
                 | "PLpgSQL_stmt_perform"
                 | "PLpgSQL_stmt_raise"
+                | "PLpgSQL_stmt_return_next"
+                | "PLpgSQL_stmt_return_query"
                 | "PLpgSQL_stmt_rollback"
             ):
                 path.steps.append(node)
 
             # nodes not yet implemented
-            case (
-                "PLpgSQL_stmt_case"
-                | "PLpgSQL_stmt_exit"
-                | "PLpgSQL_stmt_forc"
-                | "PLpgSQL_stmt_foreach_a"
-            ):
+            case "PLpgSQL_stmt_case" | "PLpgSQL_stmt_exit" | "PLpgSQL_stmt_foreach_a":
                 raise Exception(f"Not yet implemented {node.type}")
 
             # nodes that will end current path
-            case (
-                "PLpgSQL_stmt_return"
-                | "PLpgSQL_stmt_return_next"
-                | "PLpgSQL_stmt_return_query"
-            ):
+            case "PLpgSQL_stmt_return":
                 path.steps.append(node)
                 path.stack.clear()
                 return

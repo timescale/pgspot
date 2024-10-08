@@ -1,4 +1,11 @@
 
+## 0.8.1 (2024-10-0r82)
+
+- Add handling for plpgsql LOOP and EXIT
+- Fix plpgsql WHILE handling
+- Add initial implemention for plpgsql ast traversal
+- Change severity of CREATE OR REPLACE FUNCTION
+
 ## 0.8.0 (2024-08-02)
 
 - Add flag to ignore specific procedural languages (#185)

@@ -12,5 +12,5 @@ pyparsing==3.2.0
 six==1.16.0
 toml==0.10.2
 tomli==2.0.2
-tox==4.23.0
-virtualenv==20.27.0
+tox==4.23.2
+virtualenv==20.27.1

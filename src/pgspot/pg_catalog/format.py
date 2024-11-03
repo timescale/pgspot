@@ -50,7 +50,7 @@ def parse_format_string(fmt_string):
     ret = []
     current_index = 1
     for i in re.findall(
-        r"(%(([1-9])$)?[-]?([1-9][0-9]*|[*]|[*][1-9]$)?([sIL]))", fmt_string
+        r"(%(([1-9])[$])?[-]?([1-9][0-9]*|[*]|[*][1-9][$])?([sIL]))", fmt_string
     ):
         # i[0] is the full match
         # i[1] is the position specifier

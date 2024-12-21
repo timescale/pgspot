@@ -1,1 +1,1 @@
-pglast==6.9
+pglast==7.2

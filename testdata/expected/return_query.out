@@ -1,0 +1,5 @@
+PS005: Function without explicit search_path: ret_query(y integer) at line 2
+PS016: Unqualified function call: format at line 2
+
+ Errors: 0 Warnings: 2 Unknown: 0 
+

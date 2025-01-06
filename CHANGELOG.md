@@ -1,5 +1,10 @@
 
-## 0.8.1 (2024-10-0r82)
+## 0.9.0 (2025-01-06)
+
+- Fix plpgsql RETURN QUERY EXECUTE handling
+- Update pglast to 7.2 which makes pgspot use the PostgreSQL 17 parser
+
+## 0.8.1 (2024-10-08)
 
 - Add handling for plpgsql LOOP and EXIT
 - Fix plpgsql WHILE handling

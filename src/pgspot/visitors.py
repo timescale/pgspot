@@ -191,6 +191,24 @@ class PLPGSQLVisitor:
                                 self.state,
                                 "SELECT " + value["expr"]["PLpgSQL_expr"]["query"],
                             )
+                    case "PLpgSQL_stmt_return_query":
+                        if "dynquery" in value:
+                            query = (
+                                "SELECT " + value["dynquery"]["PLpgSQL_expr"]["query"]
+                            )
+                            parsed = parse_sql(query)[0].stmt.targetList[0].val
+
+                            # When the query is a string literal we can analyze it's content
+                            if (
+                                isinstance(parsed, ast.A_Const)
+                                and parsed.isnull is False
+                                and isinstance(parsed.val, ast.String)
+                            ):
+                                visit_sql(
+                                    self.state,
+                                    parsed.val.sval,
+                                )
+
                     case "PLpgSQL_stmt_while":
                         if "cond" in value:
                             visit_sql(

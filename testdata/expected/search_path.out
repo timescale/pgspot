@@ -2,6 +2,12 @@ PS016: Unqualified function call: unsafe_call3 at line 2
 PS016: Unqualified function call: unsafe_call15 at line 13
 PS016: Unqualified function call: unsafe_call21 at line 21
 PS016: Unqualified function call: unsafe_call26 at line 26
+PS018: Unsafe SET search_path:  at line 27
+PS018: Unsafe SET search_path:  at line 30
+PS005: Function without explicit search_path: f() at line 31
+PS018: Unsafe SET search_path:  at line 31
+PS005: Function without explicit search_path: f() at line 33
+PS018: Unsafe SET search_path:  at line 33
 
- Errors: 0 Warnings: 4 Unknown: 0 
+ Errors: 4 Warnings: 6 Unknown: 0 
 

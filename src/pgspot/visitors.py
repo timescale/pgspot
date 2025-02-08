@@ -269,6 +269,9 @@ class SQLVisitor(Visitor):
             if s.defname == "set" and s.arg.name == "search_path"
         ]
 
+        if len(setter) > 1:
+            self.state.error("multiple search_path settings", format_function(node))
+
         if setter:
             body_secure = self.state.is_secure_searchpath(setter[0])
         else:
@@ -344,6 +347,12 @@ class SQLVisitor(Visitor):
         if node.name == "search_path":
             if node.kind == VariableSetKind.VAR_SET_VALUE:
                 self.state.set_searchpath(node, node.is_local)
+
+                # check misquoted search_path
+                # When we detect a , in a schema name we assume this is due to misquoting
+                if len(node.args) == 1 and "," in node.args[0].val.sval:
+                    self.state.error("PS018", "")
+
             if node.kind == VariableSetKind.VAR_RESET:
                 self.state.reset_searchpath()
 

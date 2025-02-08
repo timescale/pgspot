@@ -24,3 +24,11 @@ SELECT pg_catalog.set_config('search_path','pg_catalog,pg_temp',true);
 SELECT safe_call24('%s','abc');
 SELECT pg_catalog.set_config('search_path','public',true);
 SELECT unsafe_call26('%s','abc');
+
+-- check for search_path setting with wrong quoting
+SET search_path TO 'pg_catalog, pg_temp';
+SET search_path = 'pg_catalog, pg_temp';
+
+CREATE FUNCTION f() RETURNS VOID AS '' LANGUAGE SQL SET search_path TO 'pg_catalog, pg_temp';
+CREATE FUNCTION f() RETURNS VOID AS '' LANGUAGE SQL SET search_path = 'pg_catalog, pg_temp';
+

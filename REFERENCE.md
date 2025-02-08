@@ -513,3 +513,30 @@ or b) fully-qualify the object
 SELECT * FROM extension_schema.foo;
 ```
 
+## PS018: Unsafe SET search_path
+When using SET search_path the schemas must not be enclosed in single quotes
+as otherwise the list of schemas will be treated as a single schema name instead.
+
+Erroneous example:
+
+```
+SET search_path TO 'pg_catalog, temp';
+```
+
+Setting the search_path this way will result in the actual search_path being
+pg_temp, pg_catalog, "pg_catalog, pg_temp" instead of the intended value of
+pg_catalog, pg_temp. This would allow shadowing catalog relations with relations
+in the pg_temp schema.
+
+To mitigate this do not enclose the list of schemas in single quotes
+
+```
+SET search_path TO pg_catalog, pg_temp;
+```
+
+or b) use pg_catalog.set_config
+
+```
+SELECT pg_catalog.set_config('search_path','pg_catalog, pg_temp', false);
+```
+

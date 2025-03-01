@@ -13,4 +13,4 @@ six==1.17.0
 toml==0.10.2
 tomli==2.2.1
 tox==4.24.1
-virtualenv==20.29.1
+virtualenv==20.29.2

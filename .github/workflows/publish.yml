@@ -27,4 +27,4 @@ jobs:
         run: python -m build --sdist --wheel --outdir dist/ .
 
       - name: Publish distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@e1dad8a51d599265993e342ee807cac176eb71d4 # release/v1
+        uses: pypa/gh-action-pypi-publish@db8f07d3871a0a180efa06b95d467625c19d5d5f # release/v1

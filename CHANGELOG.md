@@ -1,4 +1,8 @@
 
+## 0.9.1 (2025-05-18)
+
+- Fix plpgsql FOR IN EXECUTE handling
+
 ## 0.9.0 (2025-01-06)
 
 - Fix plpgsql RETURN QUERY EXECUTE handling

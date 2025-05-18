@@ -132,6 +132,14 @@ class PLPGSQLVisitor:
                                     self.state,
                                     "SELECT " + item["PLpgSQL_expr"]["query"],
                                 )
+                    case "PLpgSQL_stmt_dynfors":
+                        if "query" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["query"]["PLpgSQL_expr"]["query"],
+                            )
+                        if "body" in value:
+                            self.visit(value["body"])
                     case "PLpgSQL_case_when":
                         if "expr" in value:
                             visit_sql(

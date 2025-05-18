@@ -1,0 +1,6 @@
+PS005: Function without explicit search_path: public.fn() at line 1
+PS016: Unqualified function call: format at line 1
+PS016: Unqualified function call: format at line 1
+
+ Errors: 0 Warnings: 3 Unknown: 0 
+

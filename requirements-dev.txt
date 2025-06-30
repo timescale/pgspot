@@ -1,5 +1,5 @@
 black==25.1.0
-click==8.2.0
+click==8.2.1
 distlib==0.3.9
 filelock==3.18.0
 mypy-extensions==1.1.0
@@ -12,5 +12,5 @@ pyparsing==3.2.3
 six==1.17.0
 toml==0.10.2
 tomli==2.2.1
-tox==4.26.0
+tox==4.27.0
 virtualenv==20.31.2

@@ -62,7 +62,7 @@ jobs:
 
     - name: Notify slack on failure
       if: failure()
-      uses: slackapi/slack-github-action@b0fa283ad8fea605de13dc3f449259339835fc52 # v2.1.0
+      uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
       with:
         channel-id: 'CEKV5LMK3'
         slack-message: 'Nightly pgspot run for timescaledb repository failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Details>'

@@ -1,6 +1,5 @@
 from util import run
 
-
 sql = """
 CREATE FUNCTION python_max(a integer, b integer) RETURNS integer AS $$
     return max(a, b)

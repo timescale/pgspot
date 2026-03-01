@@ -193,6 +193,14 @@ class PLPGSQLVisitor:
                                     self.state,
                                     "SELECT " + item["PLpgSQL_expr"]["query"],
                                 )
+                        if "options" in value:
+                            self.visit(value["options"])
+                    case "PLpgSQL_raise_option":
+                        if "expr" in value:
+                            visit_sql(
+                                self.state,
+                                "SELECT " + value["expr"]["PLpgSQL_expr"]["query"],
+                            )
                     case "PLpgSQL_stmt_return":
                         if "expr" in value:
                             visit_sql(

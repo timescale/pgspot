@@ -1,4 +1,8 @@
 
+## 0.9.2 (2026-03-03)
+
+- Add check for RAISE options
+
 ## 0.9.1 (2025-05-18)
 
 - Fix plpgsql FOR IN EXECUTE handling

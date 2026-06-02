@@ -1,4 +1,8 @@
 
+## Unreleased
+
+- Fix `SET search_path` in a `CREATE`/`ALTER FUNCTION` clause leaking into file-level state and masking later warnings (incl. inside DO blocks)
+
 ## 0.9.2 (2026-03-03)
 
 - Add check for RAISE options

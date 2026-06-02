@@ -359,10 +359,23 @@ class SQLVisitor(Visitor):
                         self.state.error("PS007", format_name(node.defnames))
 
     def visit_VariableSetStmt(self, ancestors, node):
+        # A `SET search_path` that is part of a function's options (a
+        # `CREATE`/`ALTER FUNCTION ... SET search_path = ...` clause) only
+        # applies while that function runs. The function body is analyzed
+        # separately with its own search_path state, so it must not update the
+        # file-level state, which would wrongly mark the statements following
+        # the function as having a secure search_path. The clause is still
+        # linted for other issues (e.g. PS018).
+        in_function_options = (
+            ancestors.find_nearest((ast.CreateFunctionStmt, ast.AlterFunctionStmt))
+            is not None
+        )
+
         # only search_path relevant
         if node.name == "search_path":
             if node.kind == VariableSetKind.VAR_SET_VALUE:
-                self.state.set_searchpath(node, node.is_local)
+                if not in_function_options:
+                    self.state.set_searchpath(node, node.is_local)
 
                 # check misquoted search_path
                 # When we detect a , in a schema name we assume this is due to misquoting
@@ -370,7 +383,8 @@ class SQLVisitor(Visitor):
                     self.state.error("PS018", "")
 
             if node.kind == VariableSetKind.VAR_RESET:
-                self.state.reset_searchpath()
+                if not in_function_options:
+                    self.state.reset_searchpath()
 
     def visit_CaseExpr(self, ancestors, node):
         if node.arg and not self.state.searchpath_secure:

@@ -1,7 +1,7 @@
 black==26.5.1
 click==8.4.2
 distlib==0.4.3
-filelock==3.29.4
+filelock==4.0.3
 mypy-extensions==1.1.0
 packaging==26.2
 pathspec==1.1.1

@@ -21,14 +21,14 @@ jobs:
         python-version: '3.14'
 
     - name: Checkout pgspot
-      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     - name: Install pgspot
       run: |
         python -m pip install .
 
     - name: Checkout timescaledb
-      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         repository: 'timescale/timescaledb'
         path: 'timescaledb'
@@ -62,7 +62,7 @@ jobs:
 
     - name: Notify slack on failure
       if: failure()
-      uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+      uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
       with:
         channel-id: 'CEKV5LMK3'
         slack-message: 'Nightly pgspot run for timescaledb repository failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Details>'

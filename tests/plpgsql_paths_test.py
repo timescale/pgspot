@@ -5,7 +5,7 @@ from pgspot.path import paths
 
 def test_minimal_function():
     sql = """
-    CREATE FUNCTION mini() RETURNS TEXT AS $$ BEGIN END $$;
+    CREATE FUNCTION mini() RETURNS VOID AS $$ BEGIN END $$ LANGUAGE plpgsql;
     """
     parsed = parse_plpgsql(sql)
     node = build_node(parsed[0])

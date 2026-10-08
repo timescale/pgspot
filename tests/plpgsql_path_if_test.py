@@ -11,7 +11,7 @@ def test_if_minimal_stmt():
         EXECUTE cmd || '1';
       END IF;
     END
-    $$;
+    $$ LANGUAGE plpgsql;
     """
     parsed = parse_plpgsql(sql)
     node = build_node(parsed[0])
@@ -42,7 +42,7 @@ def test_if_else():
         EXECUTE cmd || '5';
       END IF;
     END
-    $$;
+    $$ LANGUAGE plpgsql;
     """
     parsed = parse_plpgsql(sql)
     node = build_node(parsed[0])
@@ -81,7 +81,7 @@ def test_if_stmt():
           EXECUTE cmd || '1';
       ELSE
           EXECUTE cmd || '2';
-          RETURN 'foo';
+          RETURN;
       END IF;
       IF EXISTS (SELECT 1 FROM pg_stat_activity) THEN
         EXECUTE cmd;
@@ -89,7 +89,7 @@ def test_if_stmt():
         EXECUTE cmd;
       END IF;
     END
-    $$;
+    $$ LANGUAGE plpgsql;
     """
     parsed = parse_plpgsql(sql)
     node = build_node(parsed[0])
@@ -126,7 +126,7 @@ def test_nested_if_stmt():
         END IF;
       END IF;
     END
-    $$;
+    $$ LANGUAGE plpgsql;
     """
     parsed = parse_plpgsql(sql)
     node = build_node(parsed[0])

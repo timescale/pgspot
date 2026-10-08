@@ -1,5 +1,9 @@
 # pylint: disable=fixme
 
+from .plpgsql import build_node
+
+IMPLICIT_RETURN = build_node({"PLpgSQL_stmt_return": {}})
+
 
 class Path:
     """A path is a sequence of steps that will be executed in a PLpgSQL function."""
@@ -40,10 +44,13 @@ def dfs(node, path, pathes):
             case "PLpgSQL_function":
                 # This should be top level node and so stack should be empty
                 assert not path.stack
-                path.stack = [node.action] + path.stack
+                # Falling off the end of the function terminates the path.
+                # Older parser versions always added an implicit RETURN, newer
+                # ones only do so for functions returning void.
+                path.stack = [node.action, IMPLICIT_RETURN] + path.stack
             case "PLpgSQL_stmt_block":
                 # FIXME: Add support for exception handling
-                path.stack = node.body + path.stack
+                path.stack = (getattr(node, "body", None) or []) + path.stack
             case "PLpgSQL_stmt_if":
                 path.steps.append(node)
                 if node.elsif_list:
@@ -56,7 +63,7 @@ def dfs(node, path, pathes):
                     alt.stack = node.else_body + alt.stack
                     pathes.append(alt)
 
-                path.stack = node.then_body + path.stack
+                path.stack = (node.then_body or []) + path.stack
 
             # different types of loops
             # FIXME: Add support for loop exit
@@ -68,7 +75,7 @@ def dfs(node, path, pathes):
                 | "PLpgSQL_stmt_fors"
                 | "PLpgSQL_stmt_dynfors"
             ):
-                path.stack = node.body + path.stack
+                path.stack = (getattr(node, "body", None) or []) + path.stack
 
             # nodes with no children
             case (

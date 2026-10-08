@@ -1,8 +1,8 @@
 PS016: Unqualified function call: unsafe_call2 at line 2
 PS016: Unqualified function call: unsafe_call3 at line 3
-PS016: Unqualified function call: unsafe_call8 at line 4
-PS016: Unqualified function call: unsafe_call10 at line 4
-PS016: Unqualified function call: unsafe_call19 at line 4
+PS016: Unqualified function call: unsafe_call8 at line 6
+PS016: Unqualified function call: unsafe_call10 at line 6
+PS016: Unqualified function call: unsafe_call19 at line 6
 Unknown language: pllua
 
  Errors: 0 Warnings: 5 Unknown: 1 

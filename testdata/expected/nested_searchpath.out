@@ -1,13 +1,13 @@
 PS016: Unqualified function call: unsafe_call2 at line 2
 PS005: Function without explicit search_path: f10_no_path() at line 10
 PS016: Unqualified function call: unsafe_call10 at line 10
-PS016: Unqualified function call: unsafe_call_in_do14 at line 13
-PS005: Function without explicit search_path: f18_no_path() at line 18
-PS016: Unqualified function call: unsafe_call18 at line 18
+PS016: Unqualified function call: unsafe_call_in_do14 at line 15
+PS005: Function without explicit search_path: f18_no_path() at line 19
+PS016: Unqualified function call: unsafe_call18 at line 19
 PS005: Function without explicit search_path: f19_path() at line 20
 PS016: Unqualified function call: unsafe_call19 at line 20
-PS005: Function without explicit search_path: f25_nested_no_path() at line 23
-PS016: Unqualified function call: unsafe_call25 at line 23
+PS005: Function without explicit search_path: f25_nested_no_path() at line 24
+PS016: Unqualified function call: unsafe_call25 at line 24
 
  Errors: 0 Warnings: 10 Unknown: 0 
 

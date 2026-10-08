@@ -1,7 +1,7 @@
-PS017: Unqualified object reference: custom_type in CAST(1 AS custom_type) at line 6
-PS017: Unqualified object reference: int4 in CAST('1' AS int4) at line 12
-PS017: Unqualified object reference: int4 in CAST('1' AS int4) at line 15
-PS017: Unqualified object reference: int4 in CAST('1' AS int4) at line 18
+PS017: Unqualified object reference: custom_type in CAST(1 AS custom_type) at line 8
+PS017: Unqualified object reference: int4 in CAST('1' AS int4) at line 14
+PS017: Unqualified object reference: int4 in CAST('1' AS int4) at line 17
+PS017: Unqualified object reference: int4 in CAST('1' AS int4) at line 20
 
  Errors: 4 Warnings: 0 Unknown: 0 
 

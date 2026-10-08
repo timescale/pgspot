@@ -1,5 +1,5 @@
-PS017: Unqualified object reference: collation3 at line 1
-PS007: Unsafe object creation: collation3 at line 1
+PS017: Unqualified object reference: collation3 at line 3
+PS007: Unsafe object creation: collation3 at line 3
 PS012: Unsafe table creation: unsafe_table4 at line 4
 PS017: Unqualified object reference: unsafe_table4 at line 4
 PS014: Unsafe index creation: index5 at line 5

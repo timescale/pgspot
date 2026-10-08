@@ -40,15 +40,11 @@ class Counter:
             self.errors += 1
             self.print_issue(code, context)
 
-    # Unfortunately the line_number handling is not perfect.
-    # This will be the line of the first character after the
-    # previous statement has ended. On files with comments
-    # before a statement it will indicate the line with comments
-    # instead of the line with the actual statement.
-    # Since these numbers are reported to us by pglast/libpg_query
-    # there is not much more here we can do to improve accuracy.
+    # This is the line of the first token of the current top-level
+    # statement, so issues inside multi-line statements and function
+    # bodies are reported at the line where the statement starts.
     def line_number(self):
-        return 1 + self.sql.count("\n", 0, self.stmt_location + 1)
+        return 1 + self.sql.count("\n", 0, self.stmt_location)
 
     def unknown(self, message):
         self.unknowns += 1

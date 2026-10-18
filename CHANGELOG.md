@@ -1,5 +1,5 @@
 
-## Unreleased
+## 0.9.3 (2026-10-18)
 
 - Fix `SET search_path` in a `CREATE`/`ALTER FUNCTION` clause leaking into file-level state and masking later warnings (incl. inside DO blocks)
 

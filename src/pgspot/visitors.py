@@ -488,6 +488,11 @@ class SQLVisitor(Visitor):
                 self.state.set_searchpath(schemas, local)
 
     def visit_RangeVar(self, ancestors, node):
+        # relations in FOR UPDATE/SHARE OF name FROM clause entries (usually
+        # aliases) and cannot be schema qualified, so they are not object references
+        if isinstance(abs(ancestors).node, ast.LockingClause):
+            return
+
         # a rangevar can reference CTEs which were previously defined
         cte_names = self.extract_cte_names(ancestors)
         if (
